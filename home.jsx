@@ -557,6 +557,57 @@ function FinalCTA() {
   );
 }
 
+/* ---------- CEO Letter ---------- */
+function CEOLetter() {
+  return (
+    <section className="relative py-28 md:py-36 px-6 md:px-12 bg-[var(--char)] overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, var(--gold) 0%, transparent 50%)' }} />
+      <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-10 md:gap-14 items-center relative">
+        <div className="md:col-span-5">
+          <MaskReveal>
+            <div className="relative aspect-[4/5] overflow-hidden" style={{ background: 'var(--char2)' }}>
+              <img
+                src="assets/owner-ovais-hashmi.png"
+                alt="Ovais Hashmi, Founder and CEO of Infinity Turnkey Interiors"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ filter: 'grayscale(0.2) contrast(1.05) brightness(0.94)' }}
+              />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0) 55%, rgba(10,10,10,0.72) 100%)' }} />
+              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+                <div>
+                  <div className="font-mono-mini text-gold">Founder</div>
+                  <div className="font-display text-xl text-ivory mt-1">Ovais Hashmi</div>
+                </div>
+                <div className="font-mono-mini text-[var(--ivory-faint)]">Dubai · 2013</div>
+              </div>
+            </div>
+          </MaskReveal>
+        </div>
+
+        <div className="md:col-span-7 md:pl-6">
+          <Eyebrow num="·" label="Letter from the founder" />
+          <h2 className="mt-8 font-display text-[34px] md:text-[56px] leading-[1.04] text-ivory">
+            <em className="font-display-it text-gold">“</em>Every space we sign our name to is a <em className="font-display-it text-gold">signature</em> piece.<em className="font-display-it text-gold">”</em>
+          </h2>
+          <div className="mt-8 space-y-5 text-[var(--ivory-dim)] leading-relaxed text-lg max-w-2xl">
+            <p>Crafted with pride, finished with the restraint a premium address deserves. Every project is our pride, and luxury, for us, is the discipline of leaving nothing to chance.</p>
+            <p>That has been our measure since 2013, and it is the only one we accept when we hand over a key.</p>
+          </div>
+          <div className="mt-10 pt-6 border-t border-[var(--hairline)] flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <div className="font-display text-ivory text-xl">Ovais Hashmi</div>
+              <div className="font-mono-mini text-[var(--ivory-faint)] mt-1">Founder · Infinity Turnkey Interior Decoration L.L.C</div>
+            </div>
+            <div className="font-mono-mini text-gold">Al Qusais · Dubai · Since 2013</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Home Page ---------- */
 function HomePage({ overlayOpacity }) {
   return (
@@ -569,6 +620,7 @@ function HomePage({ overlayOpacity }) {
       <ExpertiseBlock />
       <RecentWork />
       <Testimonials />
+      <CEOLetter />
       <MaterialsTicker />
       <ClientsGrid />
       <BlogPreview />
