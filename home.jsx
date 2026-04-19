@@ -275,7 +275,7 @@ function CategoriesScroll() {
         </div>
       </div>
 
-      <div className="overflow-x-auto md:overflow-hidden pb-4" style={{ scrollbarWidth: 'thin' }}>
+      <div className="overflow-hidden pb-4 no-scrollbar">
         <div ref={trackRef} className="flex gap-5 pl-6 md:pl-12" style={{ width: 'max-content' }}>
           {CATEGORIES.map((c, i) => {
             const catImg = IMG[c.id] || IMG.retail;

@@ -16,7 +16,9 @@ function AboutPage() {
     <>
       {/* Hero */}
       <section className="relative min-h-[70vh] flex items-center px-6 md:px-12 pt-16 overflow-hidden">
-        <div className="watermark" />
+        <Photo src={IMG.atelier} className="absolute inset-0" overlay={0}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.92) 100%)' }} />
+        </Photo>
         <div className="max-w-[1440px] mx-auto w-full grid md:grid-cols-12 gap-10 relative">
           <div className="md:col-span-7">
             <Eyebrow num="About · 2013 → Present" label="Get To Know Us" />
@@ -30,7 +32,7 @@ function AboutPage() {
           </div>
           <div className="md:col-span-5 md:pt-16 flex items-end">
             <p className="text-[var(--ivory-dim)] text-lg leading-relaxed max-w-md">
-              Infinity Interior provides considered, craft-led solutions to every interior fit-out brief across the United Arab Emirates — and has done, quietly, since 2013.
+              Infinity Interior provides considered, craft-led solutions to every interior fit-out brief across the United Arab Emirates, and has done, quietly, since 2013.
             </p>
           </div>
         </div>
@@ -54,7 +56,6 @@ function AboutPage() {
 
       {/* CEO Block */}
       <section className="relative py-32 px-6 md:px-12 bg-[var(--char)]">
-        <div className="watermark" />
         <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-14 relative">
           <div className="md:col-span-5">
             <MaskReveal>
@@ -152,8 +153,10 @@ function AboutPage() {
 function ServicesPage() {
   return (
     <>
-      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16">
-        <div className="watermark" />
+      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16 overflow-hidden">
+        <Photo src={IMG.svc6} className="absolute inset-0" overlay={0}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </Photo>
         <div className="max-w-[1440px] mx-auto w-full grid md:grid-cols-12 gap-10 relative">
           <div className="md:col-span-8">
             <Eyebrow num="Services · 06 disciplines" label="What We Offer" />
@@ -244,8 +247,10 @@ function ProjectsPage() {
 
   return (
     <>
-      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16">
-        <div className="watermark" />
+      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16 overflow-hidden">
+        <Photo src={IMG.proj3} className="absolute inset-0" overlay={0}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </Photo>
         <div className="max-w-[1440px] mx-auto w-full grid md:grid-cols-12 gap-10 relative">
           <div className="md:col-span-8">
             <Eyebrow num="Projects · 340+ delivered" label="Explore Our Work" />

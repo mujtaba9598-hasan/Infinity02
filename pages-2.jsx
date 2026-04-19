@@ -20,8 +20,10 @@ const ASSOC_PARTNERS = [
 function AssociatesPage() {
   return (
     <>
-      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16">
-        <div className="watermark" />
+      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16 overflow-hidden">
+        <Photo src={IMG.ceoBg} className="absolute inset-0" overlay={0}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </Photo>
         <div className="max-w-[1440px] mx-auto w-full grid md:grid-cols-12 gap-10 relative">
           <div className="md:col-span-8">
             <Eyebrow num="200+ · partnerships" label="Our Partners & Clients" />
@@ -34,7 +36,7 @@ function AssociatesPage() {
           </div>
           <div className="md:col-span-4 md:pt-16 flex items-end">
             <p className="text-[var(--ivory-dim)] text-lg leading-relaxed">
-              Every scheme is a collaboration. Below is a portion of the ledger — developers, operators, manufacturers and specialist trades who have chosen to work with us, often, and for years.
+              Every scheme is a collaboration. Below is a portion of the ledger, developers, operators, manufacturers and specialist trades who have chosen to work with us, often, and for years.
             </p>
           </div>
         </div>
@@ -132,8 +134,10 @@ const ARTICLES = [
 function NewsPage() {
   return (
     <>
-      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16">
-        <div className="watermark" />
+      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16 overflow-hidden">
+        <Photo src={IMG.blog1} className="absolute inset-0" overlay={0}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </Photo>
         <div className="max-w-[1440px] mx-auto w-full relative">
           <Eyebrow num="Journal · 2025" label="Latest News & Articles" />
           <h1 className="font-display text-[56px] md:text-[128px] leading-[0.96] mt-8 text-ivory">
@@ -217,8 +221,10 @@ function ContactPage() {
 
   return (
     <>
-      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16">
-        <div className="watermark" />
+      <section className="relative min-h-[60vh] flex items-center px-6 md:px-12 pt-16 overflow-hidden">
+        <Photo src={IMG.heroAlt} className="absolute inset-0" overlay={0}>
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.94) 100%)' }} />
+        </Photo>
         <div className="max-w-[1440px] mx-auto w-full relative">
           <Eyebrow num="Contact · Al Qusais, Dubai" label="Let's Build Something Together" />
           <h1 className="font-display text-[56px] md:text-[128px] leading-[0.96] mt-8 text-ivory">

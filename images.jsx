@@ -11,7 +11,7 @@ const IMG = {
   hospitality:   'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=1200&q=80',  // hotel lobby
   commercial:    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80',  // modern office
   residential:   'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80',  // luxury villa
-  theme:         'https://images.unsplash.com/photo-1578083881454-7cbd7f2fbe29?w=1200&q=80',  // themed space
+  theme:         'https://images.unsplash.com/photo-1517639493569-5666a7b2f494?w=1200&q=80',  // themed space
   special:       'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&q=80',  // pavilion
 
   // Studio / About
@@ -38,7 +38,7 @@ const IMG = {
   proj8: 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=1200&q=80',
   proj9: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&q=80',
   proj10:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80',
-  proj11:'https://images.unsplash.com/photo-1578083881454-7cbd7f2fbe29?w=1200&q=80',
+  proj11:'https://images.unsplash.com/photo-1502003148287-a82ef80a6abc?w=1200&q=80',
   proj12:'https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=1200&q=80',
 
   // Recent work / reel
