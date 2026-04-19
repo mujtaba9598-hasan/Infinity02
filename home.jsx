@@ -66,7 +66,11 @@ function ExpandingHero() {
   const [progress, setProgress]   = useState(0);
   const [locked, setLocked]       = useState(true);
   const [compact, setCompact]     = useState(false);
+  const targetRef                 = useRef(0);
+  const currentRef                = useRef(0);
+  const lockedRef                 = useRef(true);
   const touchY                    = useRef(null);
+  const rafRef                    = useRef(null);
 
   useEffect(() => {
     const onResize = () => setCompact(window.innerWidth < 768);
@@ -75,26 +79,50 @@ function ExpandingHero() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // Mirror locked -> ref so event handlers read the latest without re-binding
+  useEffect(() => { lockedRef.current = locked; }, [locked]);
+
+  // RAF loop: ease displayed progress toward the accumulated target each frame
   useEffect(() => {
-    const nudge = (amount) => {
-      setProgress(prev => {
-        const next = Math.min(1, Math.max(0, prev + amount));
-        if (next >= 1) setLocked(false);
-        return next;
-      });
+    const tick = () => {
+      const target  = targetRef.current;
+      const current = currentRef.current;
+      const diff    = target - current;
+
+      if (Math.abs(diff) > 0.0004) {
+        const next = current + diff * 0.12;         // lerp factor, ~8 frames to settle
+        currentRef.current = next;
+        setProgress(next);
+        if (next >= 0.9995 && lockedRef.current) {
+          lockedRef.current = false;
+          setLocked(false);
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
     };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  // Input: wheel and touch feed the target, not the displayed value
+  useEffect(() => {
+    const setTarget = (v) => {
+      targetRef.current = Math.min(1, Math.max(0, v));
+    };
+    const nudge = (amount) => setTarget(targetRef.current + amount);
 
     const onWheel = (e) => {
-      if (!locked) {
-        if (e.deltaY < -12 && window.scrollY < 4) {
+      if (!lockedRef.current) {
+        if (e.deltaY < -14 && window.scrollY < 4) {
           e.preventDefault();
+          lockedRef.current = true;
           setLocked(true);
-          setProgress(0.9);
+          setTarget(0.92);
         }
         return;
       }
       e.preventDefault();
-      nudge(e.deltaY * 0.00095);
+      nudge(e.deltaY * 0.00055);                    // gentler per-tick input
     };
 
     const onTouchStart = (e) => { touchY.current = e.touches[0].clientY; };
@@ -102,19 +130,20 @@ function ExpandingHero() {
       const y  = e.touches[0].clientY;
       const dy = (touchY.current ?? y) - y;
       touchY.current = y;
-      if (!locked) {
-        if (dy < -24 && window.scrollY < 4) {
+      if (!lockedRef.current) {
+        if (dy < -26 && window.scrollY < 4) {
           e.preventDefault();
+          lockedRef.current = true;
           setLocked(true);
-          setProgress(0.9);
+          setTarget(0.92);
         }
         return;
       }
       e.preventDefault();
-      nudge(dy * (dy < 0 ? 0.0088 : 0.0058));
+      nudge(dy * (dy < 0 ? 0.0048 : 0.0032));       // gentler touch input
     };
     const onTouchEnd = () => { touchY.current = null; };
-    const pinTop     = () => { if (locked) window.scrollTo(0, 0); };
+    const pinTop     = () => { if (lockedRef.current) window.scrollTo(0, 0); };
 
     window.addEventListener('wheel',      onWheel,      { passive: false });
     window.addEventListener('touchstart', onTouchStart, { passive: false });
@@ -128,7 +157,7 @@ function ExpandingHero() {
       window.removeEventListener('touchend',   onTouchEnd);
       window.removeEventListener('scroll',     pinTop);
     };
-  }, [locked]);
+  }, []);
 
   // Ease the derived size so it opens slowly then accelerates
   const eased  = progress * progress * (3 - 2 * progress);   // smoothstep
