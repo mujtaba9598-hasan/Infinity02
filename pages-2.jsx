@@ -333,7 +333,7 @@ function NewsPage() {
                 <p className="mt-8 text-[var(--ivory-dim)] text-lg leading-relaxed">{ARTICLES[0].excerpt}</p>
               </Reveal>
               <Reveal delay={0.36} className="mt-10 flex items-center gap-6">
-                <Magnetic><button className="btn-gold">Read the Piece →</button></Magnetic>
+                <Magnetic><HoverButton>Read the Piece →</HoverButton></Magnetic>
                 <span className="font-mono-mini text-[var(--ivory-faint)]">6 min read · by {ARTICLES[0].author}</span>
               </Reveal>
             </div>
@@ -449,7 +449,7 @@ function ContactPage() {
                     <textarea className="field" rows="4" value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="A few lines about what you're building, where, and by when." />
                   </div>
                   <div className="flex items-center gap-6 pt-4">
-                    <Magnetic><button type="submit" className="btn-gold">Send Brief →</button></Magnetic>
+                    <Magnetic><HoverButton type="submit">Send Brief →</HoverButton></Magnetic>
                     <span className="font-mono-mini text-[var(--ivory-faint)]">Typical reply — within one working day</span>
                   </div>
                 </MPP.form>
@@ -460,8 +460,8 @@ function ContactPage() {
                   <h3 className="font-display text-4xl md:text-5xl text-ivory">Thank you, {form.name.split(' ')[0] || 'friend'}.</h3>
                   <p className="mt-6 text-[var(--ivory-dim)] max-w-md mx-auto leading-relaxed">A project director will be in touch shortly. In the meantime, if the brief is urgent, reach us directly on WhatsApp.</p>
                   <div className="mt-10 flex flex-wrap justify-center gap-4">
-                    <a href="https://wa.me/971554447864" className="btn-gold">WhatsApp the Studio →</a>
-                    <button onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', type: 'Commercial', message: '' }); }} className="btn-ghost">Send Another</button>
+                    <HoverButton as="a" href="https://wa.me/971554447864">WhatsApp the Studio →</HoverButton>
+                    <HoverButton variant="ghost" onClick={() => { setSent(false); setForm({ name: '', email: '', phone: '', type: 'Commercial', message: '' }); }}>Send Another</HoverButton>
                   </div>
                 </MPP.div>
               )}
@@ -501,8 +501,8 @@ function ContactPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4 pt-6">
-                <a href="mailto:sales@infinity-fitout.com" className="btn-ghost justify-center">Email →</a>
-                <a href="https://wa.me/971554447864" className="btn-gold justify-center">WhatsApp →</a>
+                <HoverButton as="a" variant="ghost" href="mailto:sales@infinity-fitout.com" className="justify-center">Email →</HoverButton>
+                <HoverButton as="a" href="https://wa.me/971554447864" className="justify-center">WhatsApp →</HoverButton>
               </div>
 
               <div className="pt-10">
@@ -543,14 +543,15 @@ function ContactPage() {
               <div className="font-display text-ivory mt-1">Al Qusais, Dubai</div>
             </div>
 
-            <a
+            <HoverButton
+              as="a"
               href="https://www.google.com/maps/dir/?api=1&destination=25.2920%2C55.3960"
               target="_blank"
               rel="noreferrer"
-              className="btn-gold absolute bottom-6 right-6"
+              className="absolute bottom-6 right-6"
             >
               Drive me there →
-            </a>
+            </HoverButton>
           </div>
         </div>
       </section>

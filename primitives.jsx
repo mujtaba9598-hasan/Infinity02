@@ -225,5 +225,58 @@ function GlowCard({ children, className = '', style, as: Tag = 'div', hue = 44, 
   );
 }
 
+/* ---------- HoverButton: cursor-trail particle button, adapted from 21st.dev hover-button.tsx
+     Source was TSX + shadcn cn() + glassmorphism. Rewritten for babel-standalone:
+      - No cn(); plain string concat for className merging
+      - No forwardRef needed (Magnetic wraps these, uses its own ref on a span wrapper)
+      - Preserves existing btn-gold / btn-ghost CSS so no visual regression
+      - Particle colour switches per variant: ivory-ish on gold, gold on ghost
+---------- */
+function HoverButton({ children, className = '', variant = 'gold', as: Tag = 'button', ...rest }) {
+  const [circles, setCircles] = useState([]);
+  const lastAddedRef = useRef(0);
+  const listeningRef = useRef(false);
+
+  const onPointerEnter = () => { listeningRef.current = true; };
+  const onPointerLeave = () => { listeningRef.current = false; };
+  const onPointerMove = (e) => {
+    if (!listeningRef.current) return;
+    const now = performance.now();
+    if (now - lastAddedRef.current < 90) return;
+    lastAddedRef.current = now;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const xp = Math.max(0, Math.min(1, rect.width ? x / rect.width : 0.5));
+    const color = `linear-gradient(90deg, var(--circle-start) ${xp * 100}%, var(--circle-end) ${xp * 100}%)`;
+    const id = now + Math.random();
+    setCircles(prev => [...prev, { id, x, y, color, fadeState: null }]);
+    setTimeout(() => setCircles(prev => prev.map(c => c.id === id ? { ...c, fadeState: 'in' } : c)), 0);
+    setTimeout(() => setCircles(prev => prev.map(c => c.id === id ? { ...c, fadeState: 'out' } : c)), 900);
+    setTimeout(() => setCircles(prev => prev.filter(c => c.id !== id)), 2200);
+  };
+
+  const baseCls = variant === 'ghost' ? 'btn-ghost hover-btn' : 'btn-gold hover-btn';
+  return (
+    <Tag
+      className={`${baseCls} ${className}`}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+      onPointerMove={onPointerMove}
+      {...rest}
+    >
+      {circles.map(c => (
+        <span
+          key={c.id}
+          className={`hover-btn-circle${c.fadeState === 'in' ? ' is-in' : c.fadeState === 'out' ? ' is-out' : ''}`}
+          style={{ left: `${c.x}px`, top: `${c.y}px`, background: c.color }}
+          aria-hidden="true"
+        />
+      ))}
+      <span className="hover-btn-content">{children}</span>
+    </Tag>
+  );
+}
+
 /* expose for other scripts */
-Object.assign(window, { SplitLines, Eyebrow, Magnetic, Placeholder, Counter, ExpertiseBar, MaskReveal, Reveal, Stagger, ImageRise, GlowCard, useGlowPointer, DrawLine, useInView, RouteCtx, useRoute });
+Object.assign(window, { SplitLines, Eyebrow, Magnetic, Placeholder, Counter, ExpertiseBar, MaskReveal, Reveal, Stagger, ImageRise, GlowCard, useGlowPointer, HoverButton, DrawLine, useInView, RouteCtx, useRoute });

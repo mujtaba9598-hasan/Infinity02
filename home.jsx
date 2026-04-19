@@ -124,8 +124,8 @@ function HomeHero() {
             A single, senior atelier for every high-end interior, fit-out and thematic project across the United Arab Emirates.
           </p>
           <div className="mt-6 flex gap-3">
-            <Magnetic strength={0.2}><button className="btn-gold">View Recent Work →</button></Magnetic>
-            <Magnetic strength={0.2}><button className="btn-ghost">The Studio</button></Magnetic>
+            <Magnetic strength={0.2}><HoverButton>View Recent Work →</HoverButton></Magnetic>
+            <Magnetic strength={0.2}><HoverButton variant="ghost">The Studio</HoverButton></Magnetic>
           </div>
         </MH.div>
 
@@ -270,7 +270,7 @@ function AboutSnippet() {
             <Reveal delay={0.3}><p>Architects, interior designers, project managers and site operatives under one roof, collaborating with nominated suppliers and specialist trades to deliver turnkey interiors across retail, hospitality, commercial, residential and thematic sectors.</p></Reveal>
           </div>
           <Reveal delay={0.45} className="mt-10 flex gap-6">
-            <Magnetic><button onClick={() => go('about')} className="btn-gold">The Full Story →</button></Magnetic>
+            <Magnetic><HoverButton onClick={() => go('about')}>The Full Story →</HoverButton></Magnetic>
           </Reveal>
         </div>
       </div>
@@ -645,8 +645,8 @@ function FinalCTA() {
         </h2>
         <p className="mt-10 text-[var(--ivory-dim)] text-lg max-w-xl mx-auto">One conversation, one considered proposal. Tell us what you are building — we will tell you how we would build it.</p>
         <div className="mt-12 flex flex-wrap justify-center gap-5">
-          <Magnetic><button onClick={() => go('contact')} className="btn-gold">Begin a Conversation →</button></Magnetic>
-          <Magnetic><a href="tel:+971554447864" className="btn-ghost">+971 55 444 7864</a></Magnetic>
+          <Magnetic><HoverButton onClick={() => go('contact')}>Begin a Conversation →</HoverButton></Magnetic>
+          <Magnetic><HoverButton as="a" variant="ghost" href="tel:+971554447864">+971 55 444 7864</HoverButton></Magnetic>
         </div>
       </div>
     </section>

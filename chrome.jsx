@@ -155,10 +155,10 @@ function Nav() {
             <a href="tel:+971554447864" className="text-gold font-display text-[18px] tracking-normal">+971 55 444 7864</a>
           </div>
           <Magnetic strength={0.25}>
-            <button onClick={() => go('contact')} className="btn-gold">
+            <HoverButton onClick={() => go('contact')}>
               <span>Start a Project</span>
               <span>→</span>
-            </button>
+            </HoverButton>
           </Magnetic>
         </div>
 
@@ -182,7 +182,7 @@ function Nav() {
                   {l.label}
                 </a>
               ))}
-              <button onClick={() => go('contact')} className="btn-gold self-start mt-4">Start a Project →</button>
+              <HoverButton onClick={() => go('contact')} className="self-start mt-4">Start a Project →</HoverButton>
             </div>
           </M.div>
         )}
@@ -242,7 +242,7 @@ function Footer() {
           </div>
           <form onSubmit={(e)=>{e.preventDefault();}} className="flex gap-4 items-end">
             <input type="email" placeholder="Your email address" className="field flex-1" />
-            <button type="submit" className="btn-gold">Subscribe →</button>
+            <HoverButton type="submit">Subscribe →</HoverButton>
           </form>
         </div>
 

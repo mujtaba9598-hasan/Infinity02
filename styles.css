@@ -82,6 +82,37 @@ body { cursor: none; }
   filter: invert(1) hue-rotate(180deg) saturate(1.1) brightness(1.08);
 }
 
+/* ========== HOVER BUTTON particle trail (21st.dev, adapted) ========== */
+.hover-btn { position: relative; isolation: isolate; overflow: hidden; }
+.hover-btn > .hover-btn-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn-gold.hover-btn  { --circle-start: rgba(255, 255, 245, 0.95); --circle-end: rgba(255, 245, 210, 0.88); }
+.btn-ghost.hover-btn { --circle-start: rgba(212, 175, 55, 0.95); --circle-end: rgba(245, 228, 170, 0.88); }
+
+.hover-btn-circle {
+  position: absolute;
+  width: 18px; height: 18px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  filter: blur(14px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+}
+.hover-btn-circle.is-in  { opacity: 0.9; }
+.hover-btn-circle.is-out { opacity: 0; transition-duration: 1.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-btn-circle { display: none !important; }
+}
+
 /* ========== GLOW CARD (21st.dev spotlight, adapted) ========== */
 .glow-card {
   --glow-base: 44;         /* gold hue ~ 44 */

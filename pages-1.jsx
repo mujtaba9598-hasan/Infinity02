@@ -127,7 +127,7 @@ function AboutWhatWeDo() {
               <h3 className="font-display text-2xl md:text-3xl text-ivory mb-2">Ready to build something iconic?</h3>
               <p className="text-[var(--ivory-dim)]">One brief, one conversation, one signature on the package.</p>
             </div>
-            <Magnetic><button className="btn-gold">Begin a Conversation <IArrow /></button></Magnetic>
+            <Magnetic><HoverButton>Begin a Conversation <IArrow /></HoverButton></Magnetic>
           </div>
         </Reveal>
       </div>
@@ -398,7 +398,7 @@ function ServicesPage() {
                 <div className="font-display text-xl text-ivory mt-3">{s.meta}</div>
               </Reveal>
               <Reveal delay={0.5} className="mt-10">
-                <Magnetic><button className="btn-ghost">Discuss a Brief →</button></Magnetic>
+                <Magnetic><HoverButton variant="ghost">Discuss a Brief →</HoverButton></Magnetic>
               </Reveal>
             </div>
           </div>
