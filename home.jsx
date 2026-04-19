@@ -362,36 +362,6 @@ function ExpertiseBlock() {
   );
 }
 
-/* ---------- Recent Work video ---------- */
-function RecentWork() {
-  return (
-    <section className="relative py-24 px-6 md:px-12">
-      <div className="max-w-[1440px] mx-auto">
-        <div className="text-center mb-16">
-          <Eyebrow num="06" label="On Film" />
-          <h2 className="font-display text-[44px] md:text-[80px] leading-[1.02] mt-6 text-ivory">A year of quiet work.</h2>
-          <p className="mt-6 text-[var(--ivory-dim)] max-w-xl mx-auto">Three minutes. Twelve projects. One company's approach to detail — shown, not described.</p>
-        </div>
-        <div className="relative aspect-[16/9] group cursor-none">
-          <Photo src={IMG.reel} className="absolute inset-0" overlay={0}>
-            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.75) 100%)' }} />
-          </Photo>
-          <Magnetic strength={0.4} className="absolute inset-0 flex items-center justify-center">
-            <button className="w-28 h-28 md:w-36 md:h-36 rounded-full border border-[var(--gold)] flex items-center justify-center relative group-hover:bg-[var(--gold)] transition-colors duration-500">
-              <div className="absolute inset-0 rounded-full border border-[var(--gold)] animate-ping opacity-30" />
-              <svg viewBox="0 0 24 24" className="w-8 h-8 md:w-10 md:h-10 text-gold group-hover:text-[var(--ink)] transition-colors ml-1" fill="currentColor">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-            </button>
-          </Magnetic>
-          <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 font-mono-mini text-[var(--ivory-dim)]">Watch · Showreel 2025</div>
-          <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 font-mono-mini text-gold">03:24</div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------- Testimonials ---------- */
 function Testimonials() {
   const [idx, setIdx] = useState(0);
@@ -618,7 +588,6 @@ function HomePage({ overlayOpacity }) {
       <CategoriesScroll />
       <StatsBlock />
       <ExpertiseBlock />
-      <RecentWork />
       <Testimonials />
       <CEOLetter />
       <MaterialsTicker />
