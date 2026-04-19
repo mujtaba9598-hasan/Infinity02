@@ -81,7 +81,7 @@ function IntroOverlay({ onDone }) {
   return (
     <div ref={overlayRef} className="intro-overlay">
       <div ref={logoRef} className="intro-logo">
-        <img src="assets/infinity-logo-transparent.png" alt="Infinity" className="w-full" />
+        <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="w-full logo-dark-invert" />
       </div>
       <div ref={ruleRef} className="intro-rule" />
       <div ref={capRef} className="intro-caption">Turnkey Interior Decoration · Since 2013</div>
@@ -135,7 +135,7 @@ function Nav() {
       <div className="flex items-center justify-between px-6 md:px-10 py-5">
         {/* Logo */}
         <a onClick={(e) => { e.preventDefault(); go('home'); }} href="#home" className="flex items-center gap-3">
-          <img src="assets/infinity-logo-transparent.png" alt="Infinity" className="h-9 md:h-10" />
+          <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-11 md:h-14 w-auto logo-dark-invert" />
         </a>
 
         {/* Center nav */}
@@ -249,7 +249,7 @@ function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-10">
           <div className="flex items-center gap-4">
-            <img src="assets/infinity-logo-transparent.png" alt="Infinity" className="h-7" />
+            <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-12 w-auto logo-dark-invert" />
             <span className="font-mono-mini text-[var(--ivory-faint)]">© 2025 Infinity Turnkey Interiors L.L.C · All Rights Reserved</span>
           </div>
           <div className="flex items-center gap-5">

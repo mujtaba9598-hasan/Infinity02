@@ -75,6 +75,11 @@ body { cursor: none; }
   display: none;
 }
 
+/* Logo on dark backgrounds: flip brightness while preserving blue and red hues */
+.logo-dark-invert {
+  filter: invert(1) hue-rotate(180deg) saturate(1.1) brightness(1.08);
+}
+
 /* ========== MARQUEE ========== */
 @keyframes scroll-x {
   from { transform: translateX(0); }
