@@ -306,6 +306,17 @@ body { cursor: none; }
 .field::placeholder { color: rgba(245,241,232,0.3); }
 textarea.field { resize: vertical; min-height: 80px; }
 select.field { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23C9A961' stroke-width='1.2'/></svg>"); background-repeat: no-repeat; background-position: right 4px center; padding-right: 24px; }
+/* Native dropdown options: force dark bg + ivory text so they're readable when the list expands */
+select.field option {
+  background: #141210;
+  color: #F5F1E8;
+  padding: 10px;
+}
+select.field option:checked,
+select.field option:hover {
+  background: #C9A961;
+  color: #0A0A0A;
+}
 .field-label { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(245,241,232,0.42); }
 
 /* ========== PROJECT CARD ========== */
