@@ -327,12 +327,16 @@ select.field { appearance: none; background-image: url("data:image/svg+xml;utf8,
 /* ========== SERVICE HSCROLL ========== */
 .svc-card {
   position: relative; flex: 0 0 auto;
-  width: 520px; height: 620px;
+  width: 520px;
+  height: clamp(440px, calc(100vh - 260px), 640px);
   background: var(--char);
   overflow: hidden;
   border: 1px solid rgba(245,241,232,0.06);
 }
-@media (max-width: 768px) { .svc-card { width: 300px; height: 440px; } }
+@media (max-width: 768px) {
+  .svc-card { width: 300px; height: clamp(420px, calc(100vh - 180px), 520px); }
+}
+.services-pin-section { min-height: 100vh; }
 
 /* Mobile polish */
 @media (max-width: 640px) {

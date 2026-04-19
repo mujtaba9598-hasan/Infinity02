@@ -179,7 +179,9 @@ function ServicesHScroll() {
         trigger: wrapRef.current,
         pin: true,
         scrub: 1,
+        start: 'top top',
         end: () => `+=${total}`,
+        anticipatePin: 1,
         invalidateOnRefresh: true,
       }
     });
@@ -187,18 +189,18 @@ function ServicesHScroll() {
   }, []);
 
   return (
-    <section ref={wrapRef} className="relative bg-[var(--char)] overflow-hidden">
-      <div className="relative px-6 md:px-12 pt-24 pb-10 flex justify-between items-end">
+    <section ref={wrapRef} className="relative bg-[var(--char)] overflow-hidden services-pin-section flex flex-col">
+      <div className="relative px-6 md:px-12 pt-16 md:pt-20 pb-4 flex justify-between items-end shrink-0">
         <div>
           <Eyebrow num="03" label="The Practice" />
-          <h2 className="font-display text-[44px] md:text-[80px] leading-[1.02] mt-6 max-w-3xl text-ivory">
+          <h2 className="font-display text-[36px] md:text-[64px] leading-[1.04] mt-4 max-w-3xl text-ivory">
             Six disciplines.<br/><em className="font-display-it text-gold">One delivery.</em>
           </h2>
         </div>
         <div className="hidden md:block font-mono-mini text-[var(--ivory-faint)]">Scroll ↓ to reveal →</div>
       </div>
 
-      <div className="overflow-hidden pb-24 pt-16 no-scrollbar">
+      <div className="overflow-hidden pb-10 pt-6 no-scrollbar flex-1 flex items-center">
         <div ref={trackRef} className="flex gap-6 pl-6 md:pl-12" style={{ width: 'max-content' }}>
           {SERVICES.map((s, i) => {
             const svcImg = [IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i];
