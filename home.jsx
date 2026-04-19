@@ -63,14 +63,12 @@ const HERO_BG_SRC    = 'https://images.unsplash.com/photo-1566665797739-1674de7a
 const HERO_VIDEO_SRC = 'assets/hero-video.mp4';
 
 function ExpandingHero() {
-  const [progress, setProgress]   = useState(0);
-  const [locked, setLocked]       = useState(true);
-  const [compact, setCompact]     = useState(false);
-  const targetRef                 = useRef(0);
-  const currentRef                = useRef(0);
-  const lockedRef                 = useRef(true);
-  const touchY                    = useRef(null);
-  const rafRef                    = useRef(null);
+  const [progress, setProgress] = useState(0);
+  const [compact, setCompact]   = useState(false);
+  const sectionRef              = useRef(null);
+  const targetRef               = useRef(0);
+  const currentRef              = useRef(0);
+  const rafRef                  = useRef(null);
 
   useEffect(() => {
     const onResize = () => setCompact(window.innerWidth < 768);
@@ -79,84 +77,40 @@ function ExpandingHero() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Mirror locked -> ref so event handlers read the latest without re-binding
-  useEffect(() => { lockedRef.current = locked; }, [locked]);
+  // Derive target progress from how far the viewport has scrolled INTO the
+  // 2x viewport tall hero section. No scroll hijack, no scrollTo resets,
+  // the page scrolls naturally and we just read its position.
+  useEffect(() => {
+    const onScroll = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const range = el.offsetHeight - window.innerHeight;
+      if (range <= 0) { targetRef.current = 0; return; }
+      const scrolled = Math.max(0, -rect.top);
+      targetRef.current = Math.min(1, Math.max(0, scrolled / range));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
 
-  // RAF loop: ease displayed progress toward the accumulated target each frame
+  // Lerp displayed progress toward target each frame (buttery, no hijack)
   useEffect(() => {
     const tick = () => {
-      const target  = targetRef.current;
-      const current = currentRef.current;
-      const diff    = target - current;
-
+      const diff = targetRef.current - currentRef.current;
       if (Math.abs(diff) > 0.0004) {
-        const next = current + diff * 0.12;         // lerp factor, ~8 frames to settle
-        currentRef.current = next;
-        setProgress(next);
-        if (next >= 0.9995 && lockedRef.current) {
-          lockedRef.current = false;
-          setLocked(false);
-        }
+        currentRef.current = currentRef.current + diff * 0.14;
+        setProgress(currentRef.current);
       }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
-
-  // Input: wheel and touch feed the target, not the displayed value
-  useEffect(() => {
-    const setTarget = (v) => {
-      targetRef.current = Math.min(1, Math.max(0, v));
-    };
-    const nudge = (amount) => setTarget(targetRef.current + amount);
-
-    const onWheel = (e) => {
-      if (!lockedRef.current) {
-        if (e.deltaY < -14 && window.scrollY < 4) {
-          e.preventDefault();
-          lockedRef.current = true;
-          setLocked(true);
-          setTarget(0.92);
-        }
-        return;
-      }
-      e.preventDefault();
-      nudge(e.deltaY * 0.00055);                    // gentler per-tick input
-    };
-
-    const onTouchStart = (e) => { touchY.current = e.touches[0].clientY; };
-    const onTouchMove  = (e) => {
-      const y  = e.touches[0].clientY;
-      const dy = (touchY.current ?? y) - y;
-      touchY.current = y;
-      if (!lockedRef.current) {
-        if (dy < -26 && window.scrollY < 4) {
-          e.preventDefault();
-          lockedRef.current = true;
-          setLocked(true);
-          setTarget(0.92);
-        }
-        return;
-      }
-      e.preventDefault();
-      nudge(dy * (dy < 0 ? 0.0048 : 0.0032));       // gentler touch input
-    };
-    const onTouchEnd = () => { touchY.current = null; };
-    const pinTop     = () => { if (lockedRef.current) window.scrollTo(0, 0); };
-
-    window.addEventListener('wheel',      onWheel,      { passive: false });
-    window.addEventListener('touchstart', onTouchStart, { passive: false });
-    window.addEventListener('touchmove',  onTouchMove,  { passive: false });
-    window.addEventListener('touchend',   onTouchEnd);
-    window.addEventListener('scroll',     pinTop);
-    return () => {
-      window.removeEventListener('wheel',      onWheel);
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove',  onTouchMove);
-      window.removeEventListener('touchend',   onTouchEnd);
-      window.removeEventListener('scroll',     pinTop);
-    };
   }, []);
 
   // Ease the derived size so it opens slowly then accelerates
@@ -171,8 +125,12 @@ function ExpandingHero() {
   const bgOpacity = Math.max(0, 1 - progress * 0.8);
 
   return (
-    <section className="relative bg-[var(--ink)] overflow-hidden">
-      <div className="relative w-full min-h-[100dvh] flex items-center justify-center">
+    <section
+      ref={sectionRef}
+      className="relative bg-[var(--ink)] overflow-hidden"
+      style={{ height: compact ? '180vh' : '200vh' }}
+    >
+      <div className="sticky top-0 w-full h-[100dvh] flex items-center justify-center overflow-hidden">
 
         {/* Top meta strip */}
         <div className="absolute top-0 inset-x-0 z-40 flex items-center justify-between px-6 md:px-12 pt-6 pointer-events-none">
@@ -232,7 +190,7 @@ function ExpandingHero() {
               Dubai, since 2013
             </p>
             <p className="font-mono-mini text-[var(--ivory-faint)] tracking-[0.28em] uppercase text-[10px]" style={{ transform: `translateX(${flyVW}vw)` }}>
-              {locked ? 'Scroll to open' : 'Release to continue'}
+              {progress < 0.99 ? 'Scroll to open' : 'Full reel'}
             </p>
           </div>
         </div>
@@ -259,21 +217,10 @@ function ExpandingHero() {
             <div className="h-full bg-[var(--gold)]" style={{ width: `${progress * 100}%`, transition: 'width 0.08s linear' }} />
           </div>
           <div className="font-mono-mini text-[var(--ivory-faint)] tracking-[0.28em] uppercase text-[10px]">
-            {locked ? `${Math.round(progress * 100)}% · Open reel` : 'Full reel · Continue ↓'}
+            {progress < 0.99 ? `${Math.round(progress * 100)}% · Open reel` : 'Full reel · Continue ↓'}
           </div>
         </div>
       </div>
-
-      {/* Divider that reveals once the reel is fully open */}
-      <MH.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: locked ? 0 : 1, y: locked ? 24 : 0 }}
-        transition={{ duration: 0.7, delay: 0.05 }}
-        className="relative w-full py-14 flex flex-col items-center text-center border-t border-[var(--hairline)] bg-[var(--ink)]"
-      >
-        <span className="font-mono-mini text-gold tracking-[0.28em] uppercase text-[11px]">Part 01 · The Studio</span>
-        <h2 className="mt-5 font-display text-ivory text-3xl md:text-5xl">A year of quiet work, on your scroll.</h2>
-      </MH.div>
     </section>
   );
 }
