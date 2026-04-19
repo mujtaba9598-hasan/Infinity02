@@ -116,9 +116,16 @@ function ExpertiseBar({ label, pct }) {
 
 /* ---------- Mask reveal wrapper ---------- */
 function MaskReveal({ children, className = "", delay = 0 }) {
-  const [ref, inView] = useInView({ threshold: 0.2 });
+  const [ref, inView] = useInView({ threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+  const [forceIn, setForceIn] = useState(false);
+  useEffect(() => {
+    // Safety: if the observer never fires (tall viewports, clip-path quirks, etc.)
+    // force reveal after a short delay so the image never stays hidden.
+    const id = setTimeout(() => setForceIn(true), 1400);
+    return () => clearTimeout(id);
+  }, []);
   return (
-    <div ref={ref} className={`mask-reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}s` }}>
+    <div ref={ref} className={`mask-reveal ${(inView || forceIn) ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}s` }}>
       {children}
     </div>
   );

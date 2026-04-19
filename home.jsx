@@ -198,7 +198,7 @@ function ServicesHScroll() {
         <div className="hidden md:block font-mono-mini text-[var(--ivory-faint)]">Scroll ↓ to reveal →</div>
       </div>
 
-      <div className="overflow-x-auto md:overflow-hidden pb-24 pt-16 no-scrollbar">
+      <div className="overflow-hidden pb-24 pt-16 no-scrollbar">
         <div ref={trackRef} className="flex gap-6 pl-6 md:pl-12" style={{ width: 'max-content' }}>
           {SERVICES.map((s, i) => {
             const svcImg = [IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i];
