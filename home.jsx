@@ -160,10 +160,34 @@ function AboutSnippet() {
   );
 }
 
-/* ---------- Services Horizontal Scroll (native swipe) ---------- */
+/* ---------- Services Horizontal Scroll (vertical drives horizontal, pinned) ---------- */
 function ServicesHScroll() {
+  const wrapRef = useRef(null);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    const { gsap, ScrollTrigger } = window;
+    if (!gsap || !ScrollTrigger || !wrapRef.current || !trackRef.current) return;
+    if (window.innerWidth < 768) return;
+    const track = trackRef.current;
+    const total = track.scrollWidth - window.innerWidth + 80;
+
+    const anim = gsap.to(track, {
+      x: -total,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrapRef.current,
+        pin: true,
+        scrub: 1,
+        end: () => `+=${total}`,
+        invalidateOnRefresh: true,
+      }
+    });
+    return () => { anim.scrollTrigger?.kill(); anim.kill(); };
+  }, []);
+
   return (
-    <section className="relative bg-[var(--char)] overflow-hidden">
+    <section ref={wrapRef} className="relative bg-[var(--char)] overflow-hidden">
       <div className="relative px-6 md:px-12 pt-24 pb-10 flex justify-between items-end">
         <div>
           <Eyebrow num="03" label="The Practice" />
@@ -171,11 +195,11 @@ function ServicesHScroll() {
             Six disciplines.<br/><em className="font-display-it text-gold">One delivery.</em>
           </h2>
         </div>
-        <div className="hidden md:block font-mono-mini text-[var(--ivory-faint)]">Swipe → sideways</div>
+        <div className="hidden md:block font-mono-mini text-[var(--ivory-faint)]">Scroll ↓ to reveal →</div>
       </div>
 
-      <div className="overflow-x-auto pb-24 pt-16" style={{ scrollbarWidth: 'thin' }}>
-        <div className="flex gap-6 pl-6 md:pl-12" style={{ width: 'max-content' }}>
+      <div className="overflow-x-auto md:overflow-hidden pb-24 pt-16" style={{ scrollbarWidth: 'thin' }}>
+        <div ref={trackRef} className="flex gap-6 pl-6 md:pl-12" style={{ width: 'max-content' }}>
           {SERVICES.map((s, i) => {
             const svcImg = [IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i];
             return (
