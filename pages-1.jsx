@@ -78,18 +78,18 @@ function AboutPage() {
                 </p>
               </blockquote>
             </Reveal>
-            <Reveal delay={0.25} className="mt-12 grid grid-cols-3 gap-6 max-w-lg">
-              <div>
-                <div className="font-mono-mini text-[var(--ivory-faint)]">Name</div>
-                <div className="font-display text-lg text-ivory mt-2">Ovais Hashmi</div>
+            <Reveal delay={0.25} className="mt-14">
+              <div className="font-mono-mini text-gold">The Founder</div>
+              <div className="mt-3 font-display text-[40px] md:text-[56px] leading-[1.02] text-ivory">
+                Ovais Hashmi<span className="font-display-it text-gold">.</span>
               </div>
-              <div>
-                <div className="font-mono-mini text-[var(--ivory-faint)]">Title</div>
-                <div className="font-display text-lg text-gold mt-2">Chief Executive</div>
-              </div>
-              <div>
-                <div className="font-mono-mini text-[var(--ivory-faint)]">Tenure</div>
-                <div className="font-display text-lg text-ivory mt-2">Founder · 2013</div>
+              <DrawLine className="mt-5 w-24" />
+              <div className="mt-5 flex flex-wrap items-center gap-3 font-mono-mini text-[var(--ivory-dim)]">
+                <span>Founder</span>
+                <span className="text-gold opacity-60">/</span>
+                <span>Chief Executive</span>
+                <span className="text-gold opacity-60">/</span>
+                <span>Since 2013</span>
               </div>
             </Reveal>
             <Reveal delay={0.4}>
