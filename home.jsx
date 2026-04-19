@@ -204,11 +204,19 @@ function ServicesHScroll() {
             const svcImg = [IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i];
             return (
             <article key={s.n} className="svc-card">
-              <div className="absolute inset-0">
-                <img src={svcImg} alt={s.t} className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.88) 100%)' }} />
+              <div className="absolute inset-0 z-0" style={{ background: 'var(--char2)' }}>
+                <img
+                  src={svcImg}
+                  alt=""
+                  aria-hidden="true"
+                  loading="eager"
+                  decoding="async"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.92) 100%)' }} />
               </div>
-              <div className="relative h-full flex flex-col justify-between p-8 md:p-10">
+              <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-10">
                 <div>
                   <div className="font-mono-mini text-gold">{s.n} / 06</div>
                   <h3 className="mt-6 font-display text-[32px] md:text-[40px] leading-tight text-ivory">{s.t}<br/><em className="font-display-it text-[var(--gold)] text-[22px] md:text-[28px]">{s.sub}</em></h3>
