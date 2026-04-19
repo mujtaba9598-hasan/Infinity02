@@ -75,7 +75,7 @@ function HomeHero({ overlayOpacity }) {
   const dubaiTime = time.toLocaleTimeString('en-GB', { timeZone: 'Asia/Dubai', hour: '2-digit', minute: '2-digit', hour12: false });
 
   return (
-    <section ref={heroRef} className="hero-cinematic relative min-h-screen overflow-hidden bg-[var(--ink)]">
+    <section ref={heroRef} className="hero-cinematic relative h-screen overflow-hidden bg-[var(--ink)]">
       {/* Backdrop image with mouse parallax */}
       <div
         className="absolute inset-0"
@@ -126,7 +126,7 @@ function HomeHero({ overlayOpacity }) {
       <div className="hero-grain" />
 
       {/* Top meta strip */}
-      <div className="absolute top-0 inset-x-0 z-10 hidden md:flex items-center justify-between px-12 pt-20 text-[var(--ivory-faint)] font-mono-mini">
+      <div className="absolute top-0 inset-x-0 z-10 hidden md:flex items-center justify-between px-12 pt-16 text-[var(--ivory-faint)] font-mono-mini">
         <div className="flex items-center gap-4">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
           <span>Live Studio</span>
@@ -141,7 +141,7 @@ function HomeHero({ overlayOpacity }) {
       </div>
 
       {/* Content overlay */}
-      <div className="relative z-10 min-h-screen flex flex-col px-6 md:px-12 pt-28 pb-10">
+      <div className="relative z-10 h-full flex flex-col px-6 md:px-12 pt-24 pb-6">
         <div className="flex-1 flex flex-col justify-center max-w-[1440px] mx-auto w-full" style={{ perspective: '1400px' }}>
           <MH.div
             className="max-w-5xl"
@@ -157,8 +157,8 @@ function HomeHero({ overlayOpacity }) {
             <Eyebrow num="01 / 06" label="Infinity Turnkey · Dubai, Since 2013" />
 
             <h1
-              className="mt-8 font-display leading-[0.94] relative"
-              style={{ fontSize: 'clamp(52px, 10vw, 168px)' }}
+              className="mt-5 font-display leading-[0.94] relative"
+              style={{ fontSize: 'clamp(44px, 8vw, 128px)' }}
             >
               <span className="block text-ivory relative">
                 <SplitLines text={['Creative solutions']} />
@@ -184,12 +184,12 @@ function HomeHero({ overlayOpacity }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.85 }}
-              className="mt-12 grid md:grid-cols-12 gap-6 md:gap-10 items-end"
+              className="mt-8 grid md:grid-cols-12 gap-5 md:gap-10 items-end"
             >
-              <p className="md:col-span-6 text-[var(--ivory-dim)] text-base md:text-lg leading-relaxed max-w-lg">
+              <p className="md:col-span-6 text-[var(--ivory-dim)] text-sm md:text-base leading-relaxed max-w-lg">
                 The design and contracting atelier. A single, senior team for every high-end interior, fit-out and thematic project across the United Arab Emirates.
               </p>
-              <div className="md:col-span-6 flex flex-wrap gap-4 md:justify-end">
+              <div className="md:col-span-6 flex flex-wrap gap-3 md:justify-end">
                 <Magnetic strength={0.2}><button className="btn-gold">View Recent Work →</button></Magnetic>
                 <Magnetic strength={0.2}><button className="btn-ghost">The Studio</button></Magnetic>
               </div>
@@ -202,13 +202,13 @@ function HomeHero({ overlayOpacity }) {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 1.05 }}
-          className="mt-auto pt-12"
+          className="shrink-0 pt-6"
         >
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-3">
             <div className="font-mono-mini text-[var(--ivory-faint)]">Sectors we work in</div>
             <div className="font-mono-mini text-gold hidden md:block">{SECTORS.find(s => s.id === active)?.label} · showcase</div>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2.5">
             {SECTORS.map((s) => (
               <button
                 key={s.id}
