@@ -215,15 +215,18 @@ function useGlowPointer() {
   }, []);
 }
 
-function GlowCard({ children, className = '', style, as: Tag = 'div', hue = 44, spread = 50, ...rest }) {
+const GlowCard = React.forwardRef(function GlowCard(
+  { children, className = '', style, as: Tag = 'div', hue = 44, spread = 50, ...rest },
+  ref
+) {
   const mergedStyle = Object.assign({ '--glow-base': hue, '--glow-spread': spread }, style || {});
   return (
-    <Tag data-glow className={`glow-card ${className}`} style={mergedStyle} {...rest}>
+    <Tag ref={ref} data-glow className={`glow-card ${className}`} style={mergedStyle} {...rest}>
       <span data-glow-inner aria-hidden="true" />
       {children}
     </Tag>
   );
-}
+});
 
 /* ---------- HoverButton: cursor-trail particle button, adapted from 21st.dev hover-button.tsx
      Source was TSX + shadcn cn() + glassmorphism. Rewritten for babel-standalone:

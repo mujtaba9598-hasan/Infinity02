@@ -82,6 +82,26 @@ body { cursor: none; }
   filter: invert(1) hue-rotate(180deg) saturate(1.1) brightness(1.08);
 }
 
+/* ========== CARD REVEAL (per-item fade + scale + deblur on enter viewport) ========== */
+.card-reveal {
+  opacity: 0;
+  transform: translate3d(18px, 24px, 0) scale(0.94);
+  filter: blur(4px);
+  transition:
+    opacity 0.95s cubic-bezier(.2,.8,.2,1),
+    transform 1s cubic-bezier(.2,.8,.2,1),
+    filter 1.05s cubic-bezier(.2,.8,.2,1);
+  will-change: opacity, transform, filter;
+}
+.card-reveal.is-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-reveal { opacity: 1 !important; transform: none !important; filter: none !important; transition: none; }
+}
+
 /* ========== BRANDS ORBIT (21st.dev spinning-logos, adapted) ========== */
 @keyframes brands-orbit-spin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes brands-orbit-counter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }

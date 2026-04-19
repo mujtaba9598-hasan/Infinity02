@@ -510,6 +510,63 @@ function AboutSnippet() {
   );
 }
 
+/* ---------- Per-card reveal wrapper for Services ----------
+   Each service card owns a small IntersectionObserver; the first time its
+   bounding rect crosses the viewport the is-in class flips on and the
+   CSS .card-reveal transition fades + de-blurs + settles the tile. A
+   2.2s safety timer ensures the card is never permanently hidden if
+   the observer fails to fire for any reason (tall viewports, pinned
+   scroll edge cases, etc.). ---------- */
+function ServiceCardInView({ service, image }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); io.disconnect(); }
+    }, { threshold: 0.22, rootMargin: '0px -30px 0px -30px' });
+    io.observe(el);
+    const fallback = setTimeout(() => setVisible(true), 2200);
+    return () => { io.disconnect(); clearTimeout(fallback); };
+  }, []);
+
+  return (
+    <GlowCard
+      ref={ref}
+      as="article"
+      className={`svc-card card-reveal${visible ? ' is-in' : ''}`}
+    >
+      <div className="absolute inset-0 z-0" style={{ background: 'var(--char2)' }}>
+        <img
+          src={image}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.92) 100%)' }} />
+      </div>
+      <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-10">
+        <div>
+          <div className="font-mono-mini text-gold">{service.n} / 06</div>
+          <h3 className="mt-6 font-display text-[32px] md:text-[40px] leading-tight text-ivory">
+            {service.t}
+            <br />
+            <em className="font-display-it text-[var(--gold)] text-[22px] md:text-[28px]">{service.sub}</em>
+          </h3>
+        </div>
+        <div>
+          <p className="text-[var(--ivory-dim)] leading-relaxed max-w-sm">{service.body}</p>
+          <div className="mt-6 pt-6 border-t border-[var(--hairline)] font-mono-mini text-[var(--ivory-faint)]">{service.meta}</div>
+        </div>
+      </div>
+    </GlowCard>
+  );
+}
+
 /* ---------- Services Horizontal Scroll (vertical drives horizontal, pinned) ---------- */
 function ServicesHScroll() {
   const wrapRef = useRef(null);
@@ -555,36 +612,48 @@ function ServicesHScroll() {
           {SERVICES.map((s, i) => {
             const svcImg = [IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i];
             return (
-            <GlowCard as="article" key={s.n} className="svc-card">
-              <div className="absolute inset-0 z-0" style={{ background: 'var(--char2)' }}>
-                <img
-                  src={svcImg}
-                  alt=""
-                  aria-hidden="true"
-                  loading="eager"
-                  decoding="async"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.92) 100%)' }} />
-              </div>
-              <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-10">
-                <div>
-                  <div className="font-mono-mini text-gold">{s.n} / 06</div>
-                  <h3 className="mt-6 font-display text-[32px] md:text-[40px] leading-tight text-ivory">{s.t}<br/><em className="font-display-it text-[var(--gold)] text-[22px] md:text-[28px]">{s.sub}</em></h3>
-                </div>
-                <div>
-                  <p className="text-[var(--ivory-dim)] leading-relaxed max-w-sm">{s.body}</p>
-                  <div className="mt-6 pt-6 border-t border-[var(--hairline)] font-mono-mini text-[var(--ivory-faint)]">{s.meta}</div>
-                </div>
-              </div>
-            </GlowCard>
+            <ServiceCardInView key={s.n} service={s} image={svcImg} />
             );
           })}
           <div className="w-24 flex-shrink-0" />
         </div>
       </div>
     </section>
+  );
+}
+
+/* ---------- Per-card reveal wrapper for Categories (same IO pattern as Services) ---------- */
+function CategoryCardInView({ category, index, image }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); io.disconnect(); }
+    }, { threshold: 0.22, rootMargin: '0px -30px 0px -30px' });
+    io.observe(el);
+    const fallback = setTimeout(() => setVisible(true), 2200);
+    return () => { io.disconnect(); clearTimeout(fallback); };
+  }, []);
+
+  return (
+    <GlowCard
+      ref={ref}
+      as="article"
+      className={`w-[280px] sm:w-[360px] md:w-[420px] flex-shrink-0 proj card-reveal${visible ? ' is-in' : ''}`}
+    >
+      <Photo src={image} className="cat-photo" overlay={0.15}>
+        <div className="ph-label">{category.label}</div>
+      </Photo>
+      <div className="pt-5 flex items-end justify-between">
+        <div>
+          <div className="font-mono-mini text-[var(--ivory-faint)]">Category 0{index + 1}</div>
+          <div className="font-display text-2xl text-ivory mt-1">{category.title}</div>
+        </div>
+        <div className="font-mono-mini text-gold">{category.count}</div>
+      </div>
+    </GlowCard>
   );
 }
 
@@ -634,18 +703,7 @@ function CategoriesScroll() {
           {CATEGORIES.map((c, i) => {
             const catImg = IMG[c.id] || IMG.retail;
             return (
-            <GlowCard as="article" key={c.id} className="w-[280px] sm:w-[360px] md:w-[420px] flex-shrink-0 proj">
-              <Photo src={catImg} className="cat-photo" overlay={0.15}>
-                <div className="ph-label">{c.label}</div>
-              </Photo>
-              <div className="pt-5 flex items-end justify-between">
-                <div>
-                  <div className="font-mono-mini text-[var(--ivory-faint)]">Category 0{i+1}</div>
-                  <div className="font-display text-2xl text-ivory mt-1">{c.title}</div>
-                </div>
-                <div className="font-mono-mini text-gold">{c.count}</div>
-              </div>
-            </GlowCard>
+            <CategoryCardInView key={c.id} category={c} index={i} image={catImg} />
             );
           })}
           <div className="w-24 flex-shrink-0" />
