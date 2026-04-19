@@ -10,7 +10,16 @@ function AboutPage() {
     { n: '02', t: 'Innovative Designs', body: 'We read deeply, travel often, and refuse the obvious reference. Every scheme begins with a narrative — not a mood board.' },
     { n: '03', t: 'Creative Ideas', body: 'A working design is a resolved idea. We spend the drawing board time most studios save — and give it back on site.' },
   ];
-  const partners = ['Joinery','Upholstery','Marble & Stone','Gypsum','Electro-Mechanical','Glass & Metal','Painting','AutoCAD & Visualisation'];
+  const partners = [
+    { name: 'Joinery',                 img: IMG.svc5 },
+    { name: 'Upholstery',              img: IMG.blog5 },
+    { name: 'Marble & Stone',          img: IMG.blog4 },
+    { name: 'Gypsum',                  img: IMG.studioPortrait },
+    { name: 'Electro-Mechanical',      img: IMG.svc2 },
+    { name: 'Glass & Metal',           img: IMG.svc4 },
+    { name: 'Painting',                img: IMG.blog2 },
+    { name: 'AutoCAD & Visualisation', img: IMG.atelier },
+  ];
 
   return (
     <>
@@ -135,15 +144,30 @@ function AboutPage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-[var(--hairline)]">
-            {partners.map((p, i) => (
-              <div key={i} className="aspect-square border-b border-r border-[var(--hairline)] p-8 flex flex-col justify-between group hover:bg-[var(--char2)] transition-colors">
-                <div className="font-mono-mini text-gold">0{i+1}</div>
-                <div>
-                  <div className="font-display text-xl md:text-2xl text-ivory">{p}</div>
-                  <div className="h-px w-8 bg-[var(--gold)] mt-4 transition-all duration-500 group-hover:w-full" />
+            <Stagger step={0.06} y={18} blur={2} duration={0.7}>
+              {partners.map((p, i) => (
+                <div key={i} className="aspect-square border-b border-r border-[var(--hairline)] relative overflow-hidden group cursor-none">
+                  <img
+                    src={p.img}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-95 transition-all duration-700 ease-out"
+                    style={{ filter: 'grayscale(0.7) contrast(1.08) brightness(0.55)' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[rgba(10,10,10,0.75)] via-[rgba(10,10,10,0.55)] to-[rgba(10,10,10,0.8)] group-hover:from-[rgba(10,10,10,0.55)] group-hover:to-[rgba(10,10,10,0.7)] transition-colors duration-500" />
+                  <div className="absolute top-0 left-0 h-px w-0 bg-[var(--gold)] group-hover:w-full transition-all duration-700 ease-out" />
+                  <div className="absolute bottom-0 right-0 h-px w-0 bg-[var(--gold)] group-hover:w-full transition-all duration-700 ease-out delay-100" />
+                  <div className="relative p-8 h-full flex flex-col justify-between">
+                    <div className="font-mono-mini text-gold">0{i+1}</div>
+                    <div>
+                      <div className="font-display text-xl md:text-2xl text-ivory">{p.name}</div>
+                      <div className="h-px w-8 bg-[var(--gold)] mt-4 transition-all duration-500 group-hover:w-24" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </Stagger>
           </div>
         </div>
       </section>
