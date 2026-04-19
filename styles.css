@@ -336,7 +336,10 @@ select.field { appearance: none; background-image: url("data:image/svg+xml;utf8,
 @media (max-width: 768px) {
   .svc-card { width: 300px; height: clamp(420px, calc(100vh - 180px), 520px); }
 }
-.services-pin-section { min-height: 100vh; }
+.services-pin-section,
+.categories-pin-section { min-height: 100vh; }
+
+.cat-photo { height: clamp(380px, calc(100vh - 320px), 580px); }
 
 /* Mobile polish */
 @media (max-width: 640px) {

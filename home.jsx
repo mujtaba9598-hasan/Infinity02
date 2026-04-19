@@ -258,7 +258,9 @@ function CategoriesScroll() {
         trigger: wrapRef.current,
         pin: true,
         scrub: 1,
+        start: 'top top',
         end: () => `+=${total}`,
+        anticipatePin: 1,
         invalidateOnRefresh: true,
       }
     });
@@ -266,30 +268,26 @@ function CategoriesScroll() {
   }, []);
 
   return (
-    <section ref={wrapRef} className="relative py-24 md:py-32 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
-        <div className="flex items-end justify-between mb-16">
+    <section ref={wrapRef} className="relative overflow-hidden categories-pin-section flex flex-col">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full shrink-0 pt-16 md:pt-20">
+        <div className="flex items-end justify-between mb-6">
           <div>
             <Eyebrow num="04" label="Project Categories" />
-            <h2 className="font-display text-[44px] md:text-[80px] leading-[1.02] mt-6 text-ivory">Where we have built.</h2>
+            <h2 className="font-display text-[36px] md:text-[64px] leading-[1.04] mt-4 text-ivory">Where we have built.</h2>
           </div>
           <a onClick={(e)=>{e.preventDefault(); go('projects');}} href="#projects" className="font-eyebrow text-gold link-underline hidden md:block">All Projects →</a>
         </div>
       </div>
 
-      <div className="overflow-hidden pb-4 no-scrollbar">
+      <div className="overflow-hidden pb-8 no-scrollbar flex-1 flex items-center">
         <div ref={trackRef} className="flex gap-5 pl-6 md:pl-12" style={{ width: 'max-content' }}>
           {CATEGORIES.map((c, i) => {
             const catImg = IMG[c.id] || IMG.retail;
             return (
-            <article key={c.id} className="w-[280px] sm:w-[380px] md:w-[440px] flex-shrink-0 proj">
-              <Photo src={catImg} className="aspect-[3/4]" overlay={0.15}>
+            <article key={c.id} className="w-[280px] sm:w-[360px] md:w-[420px] flex-shrink-0 proj">
+              <Photo src={catImg} className="cat-photo" overlay={0.15}>
                 <div className="ph-label">{c.label}</div>
               </Photo>
-              <div className="proj-meta">
-                <div className="font-mono-mini text-gold">{c.count}</div>
-                <div className="font-display text-3xl text-ivory mt-2">{c.title}</div>
-              </div>
               <div className="pt-5 flex items-end justify-between">
                 <div>
                   <div className="font-mono-mini text-[var(--ivory-faint)]">Category 0{i+1}</div>
