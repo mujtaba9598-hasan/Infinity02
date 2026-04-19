@@ -82,6 +82,82 @@ body { cursor: none; }
   filter: invert(1) hue-rotate(180deg) saturate(1.1) brightness(1.08);
 }
 
+/* ========== GLOW CARD (21st.dev spotlight, adapted) ========== */
+.glow-card {
+  --glow-base: 44;         /* gold hue ~ 44 */
+  --glow-spread: 50;
+  --glow-size: 280;
+  --glow-border-size: 1px;
+  --glow-hue: calc(var(--glow-base, 44) + (var(--glow-xp, 0) * var(--glow-spread, 0)));
+  position: relative;
+  isolation: isolate;
+}
+.glow-card::before,
+.glow-card::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: calc(var(--glow-border-size) * -1);
+  border-radius: inherit;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: calc(100% + (2 * var(--glow-border-size))) calc(100% + (2 * var(--glow-border-size)));
+  -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+          mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  -webkit-mask-clip: padding-box, border-box;
+          mask-clip: padding-box, border-box;
+  -webkit-mask-composite: source-in, xor;
+          mask-composite: intersect;
+  border: var(--glow-border-size) solid transparent;
+  z-index: 5;
+  opacity: 0.0;
+  transition: opacity 0.4s ease;
+}
+.glow-card:hover::before,
+.glow-card:hover::after { opacity: 1; }
+.glow-card::before {
+  background-image: radial-gradient(
+    calc(var(--glow-size) * 0.75px) calc(var(--glow-size) * 0.75px) at
+    calc(var(--glow-x, 0) * 1px)
+    calc(var(--glow-y, 0) * 1px),
+    hsl(var(--glow-hue, 44) 72% 58% / 0.9), transparent 100%
+  );
+  filter: brightness(1.5);
+}
+.glow-card::after {
+  background-image: radial-gradient(
+    calc(var(--glow-size) * 0.5px) calc(var(--glow-size) * 0.5px) at
+    calc(var(--glow-x, 0) * 1px)
+    calc(var(--glow-y, 0) * 1px),
+    hsl(0 100% 100% / 0.95), transparent 100%
+  );
+}
+.glow-card > [data-glow-inner] {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: radial-gradient(
+    calc(var(--glow-size) * 1px) calc(var(--glow-size) * 1px) at
+    calc(var(--glow-x, 0) * 1px)
+    calc(var(--glow-y, 0) * 1px),
+    hsl(var(--glow-hue, 44) 68% 55% / 0.08), transparent 55%
+  );
+  background-attachment: fixed;
+  background-size: calc(100% + 2px) calc(100% + 2px);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 4;
+}
+.glow-card:hover > [data-glow-inner] { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-card::before, .glow-card::after, .glow-card > [data-glow-inner] { opacity: 0 !important; transition: none; }
+}
+
 /* Hide scrollbar utility (used on horizontal-scroll tracks) */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }

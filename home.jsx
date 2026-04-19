@@ -323,7 +323,7 @@ function ServicesHScroll() {
           {SERVICES.map((s, i) => {
             const svcImg = [IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i];
             return (
-            <article key={s.n} className="svc-card">
+            <GlowCard as="article" key={s.n} className="svc-card">
               <div className="absolute inset-0 z-0" style={{ background: 'var(--char2)' }}>
                 <img
                   src={svcImg}
@@ -346,7 +346,7 @@ function ServicesHScroll() {
                   <div className="mt-6 pt-6 border-t border-[var(--hairline)] font-mono-mini text-[var(--ivory-faint)]">{s.meta}</div>
                 </div>
               </div>
-            </article>
+            </GlowCard>
             );
           })}
           <div className="w-24 flex-shrink-0" />
@@ -402,7 +402,7 @@ function CategoriesScroll() {
           {CATEGORIES.map((c, i) => {
             const catImg = IMG[c.id] || IMG.retail;
             return (
-            <article key={c.id} className="w-[280px] sm:w-[360px] md:w-[420px] flex-shrink-0 proj">
+            <GlowCard as="article" key={c.id} className="w-[280px] sm:w-[360px] md:w-[420px] flex-shrink-0 proj">
               <Photo src={catImg} className="cat-photo" overlay={0.15}>
                 <div className="ph-label">{c.label}</div>
               </Photo>
@@ -413,7 +413,7 @@ function CategoriesScroll() {
                 </div>
                 <div className="font-mono-mini text-gold">{c.count}</div>
               </div>
-            </article>
+            </GlowCard>
             );
           })}
           <div className="w-24 flex-shrink-0" />
@@ -606,11 +606,11 @@ function BlogPreview() {
             {BLOGS.map((b, i) => {
               const blogImg = [IMG.blog1, IMG.blog2, IMG.blog3][i] || IMG.blog1;
               return (
-              <article key={i} className="proj group">
+              <GlowCard as="article" key={i} className="proj group">
                 <Photo src={blogImg} className="aspect-[4/5]" overlay={0.15}>
                   <div className="absolute top-4 left-4 font-mono-mini text-gold bg-[rgba(10,10,10,0.6)] px-3 py-1 backdrop-blur-sm">{b.tag}</div>
                 </Photo>
-                <div className="pt-6">
+                <div className="pt-6 px-3 pb-3">
                   <div className="flex items-center gap-4 font-mono-mini text-[var(--ivory-faint)]">
                     <span>{b.date}</span><span>·</span><span>{b.author}</span>
                   </div>
@@ -618,7 +618,7 @@ function BlogPreview() {
                   <p className="mt-4 text-[var(--ivory-dim)] leading-relaxed">{b.excerpt}</p>
                   <div className="mt-6 font-mono-mini text-gold link-underline inline-block">Read Article →</div>
                 </div>
-              </article>
+              </GlowCard>
               );
             })}
           </Stagger>

@@ -47,6 +47,9 @@ function App() {
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
   const [tweaksOpen, setTweaksOpen] = useState(false);
 
+  /* Mouse-tracked glow border for every GlowCard in the tree */
+  useGlowPointer();
+
   /* Hash routing */
   useEffect(() => {
     const onHash = () => setRoute(location.hash.replace('#', '') || 'home');

@@ -188,5 +188,42 @@ function DrawLine({ className = "", delay = 0, duration = 1.2 }) {
   );
 }
 
+/* ---------- GlowCard: spotlight card adapted from 21st.dev spotlight-card.tsx
+     Source used data-glow attribute + ::before/::after radial gradients that follow
+     the cursor via CSS custom properties. Port keeps the visual behaviour but uses a
+     single document-level pointer listener (useGlowPointer) that writes the coords
+     to the html element, so every data-glow card inherits them through var(), instead
+     of attaching one listener per card. ---------- */
+
+let __glowListenerAttached = false;
+function useGlowPointer() {
+  useEffect(() => {
+    if (__glowListenerAttached) return;
+    __glowListenerAttached = true;
+    const sync = (e) => {
+      const root = document.documentElement;
+      root.style.setProperty('--glow-x', e.clientX.toFixed(2));
+      root.style.setProperty('--glow-y', e.clientY.toFixed(2));
+      root.style.setProperty('--glow-xp', (e.clientX / window.innerWidth).toFixed(3));
+      root.style.setProperty('--glow-yp', (e.clientY / window.innerHeight).toFixed(3));
+    };
+    document.addEventListener('pointermove', sync, { passive: true });
+    return () => {
+      document.removeEventListener('pointermove', sync);
+      __glowListenerAttached = false;
+    };
+  }, []);
+}
+
+function GlowCard({ children, className = '', style, as: Tag = 'div', hue = 44, spread = 50, ...rest }) {
+  const mergedStyle = Object.assign({ '--glow-base': hue, '--glow-spread': spread }, style || {});
+  return (
+    <Tag data-glow className={`glow-card ${className}`} style={mergedStyle} {...rest}>
+      <span data-glow-inner aria-hidden="true" />
+      {children}
+    </Tag>
+  );
+}
+
 /* expose for other scripts */
-Object.assign(window, { SplitLines, Eyebrow, Magnetic, Placeholder, Counter, ExpertiseBar, MaskReveal, Reveal, Stagger, ImageRise, DrawLine, useInView, RouteCtx, useRoute });
+Object.assign(window, { SplitLines, Eyebrow, Magnetic, Placeholder, Counter, ExpertiseBar, MaskReveal, Reveal, Stagger, ImageRise, GlowCard, useGlowPointer, DrawLine, useInView, RouteCtx, useRoute });

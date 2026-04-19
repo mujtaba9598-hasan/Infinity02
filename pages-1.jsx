@@ -53,12 +53,12 @@ function AboutPage() {
           <div className="grid md:grid-cols-3 gap-px bg-[var(--hairline)] border border-[var(--hairline)]">
             <Stagger step={0.12} y={30}>
               {values.map((v) => (
-                <div key={v.n} className="group bg-[var(--ink)] p-10 md:p-14 relative overflow-hidden transition-colors duration-700 hover:bg-[var(--char2)]">
+                <GlowCard key={v.n} className="group bg-[var(--ink)] p-10 md:p-14 overflow-hidden transition-colors duration-700 hover:bg-[var(--char2)]">
                   <div className="font-mono-mini text-gold mb-10">{v.n} · Principle</div>
                   <h3 className="font-display text-[40px] md:text-[48px] leading-tight text-ivory">{v.t}</h3>
                   <p className="mt-8 text-[var(--ivory-dim)] leading-relaxed max-w-sm">{v.body}</p>
                   <div className="mt-10 h-px w-12 bg-[var(--gold)] transition-all duration-700 group-hover:w-32" />
-                </div>
+                </GlowCard>
               ))}
             </Stagger>
           </div>
@@ -146,7 +146,7 @@ function AboutPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 border-t border-l border-[var(--hairline)]">
             <Stagger step={0.06} y={18} blur={2} duration={0.7}>
               {partners.map((p, i) => (
-                <div key={i} className="aspect-square border-b border-r border-[var(--hairline)] relative overflow-hidden group cursor-none">
+                <GlowCard key={i} className="aspect-square border-b border-r border-[var(--hairline)] overflow-hidden group cursor-none">
                   <img
                     src={p.img}
                     alt=""
@@ -156,8 +156,6 @@ function AboutPage() {
                     style={{ filter: 'grayscale(0.7) contrast(1.08) brightness(0.55)' }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-[rgba(10,10,10,0.75)] via-[rgba(10,10,10,0.55)] to-[rgba(10,10,10,0.8)] group-hover:from-[rgba(10,10,10,0.55)] group-hover:to-[rgba(10,10,10,0.7)] transition-colors duration-500" />
-                  <div className="absolute top-0 left-0 h-px w-0 bg-[var(--gold)] group-hover:w-full transition-all duration-700 ease-out" />
-                  <div className="absolute bottom-0 right-0 h-px w-0 bg-[var(--gold)] group-hover:w-full transition-all duration-700 ease-out delay-100" />
                   <div className="relative p-8 h-full flex flex-col justify-between">
                     <div className="font-mono-mini text-gold">0{i+1}</div>
                     <div>
@@ -165,7 +163,7 @@ function AboutPage() {
                       <div className="h-px w-8 bg-[var(--gold)] mt-4 transition-all duration-500 group-hover:w-24" />
                     </div>
                   </div>
-                </div>
+                </GlowCard>
               ))}
             </Stagger>
           </div>
