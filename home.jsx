@@ -46,9 +46,11 @@ const BLOGS = [
   { date: '08 February 2025', author: 'Projects', tag: 'Process', title: 'How to furnish a house, slowly.', excerpt: 'A working method for furnishing a Dubai residence without the showroom shortcut — for owners who want the house to feel inevitable.' },
 ];
 
-/* ---------- Hero (Cinematic 3D) ---------- */
-function HomeHero({ overlayOpacity }) {
-  const [active, setActive] = useState('retail');
+/* ---------- Hero (Architectural Editorial 3D) ---------- */
+const HERO_ARCH_DEEP = 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1600&q=80';
+const HERO_ARCH_MAIN = 'https://images.unsplash.com/photo-1486304873000-235643847519?w=1600&q=85';
+
+function HomeHero() {
   const heroRef = useRef(null);
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
   const [time, setTime] = useState(new Date());
@@ -68,164 +70,177 @@ function HomeHero({ overlayOpacity }) {
     return () => { window.removeEventListener('mousemove', onMove); clearInterval(clock); };
   }, []);
 
-  const parX = (mouse.x - 0.5) * 40;
-  const parY = (mouse.y - 0.5) * 30;
-  const tiltX = (0.5 - mouse.y) * 4;
-  const tiltY = (mouse.x - 0.5) * 5;
+  const tiltY = (mouse.x - 0.5) * 7;
+  const tiltX = (0.5 - mouse.y) * 5;
   const dubaiTime = time.toLocaleTimeString('en-GB', { timeZone: 'Asia/Dubai', hour: '2-digit', minute: '2-digit', hour12: false });
 
   return (
-    <section ref={heroRef} className="hero-cinematic relative h-screen overflow-hidden bg-[var(--ink)]">
-      {/* Backdrop image with mouse parallax */}
-      <div
-        className="absolute inset-0"
-        style={{
-          transform: `scale(1.1) translate3d(${parX * -0.4}px, ${parY * -0.3}px, 0)`,
-          transition: 'transform 0.6s cubic-bezier(.2,.8,.2,1)',
-        }}
-      >
-        <img
-          src={IMG.heroReel}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'grayscale(0.25) contrast(1.08) brightness(0.78)' }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: `linear-gradient(180deg, rgba(10,10,10,${overlayOpacity + 0.15}) 0%, rgba(10,10,10,${overlayOpacity + 0.7}) 100%)` }}
-        />
-      </div>
-
+    <section ref={heroRef} className="hero-arch relative h-screen overflow-hidden bg-[var(--ink)]">
       {/* Gold spotlight following the cursor */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-[1]"
         style={{
-          background: `radial-gradient(650px circle at ${mouse.x * 100}% ${mouse.y * 100}%, rgba(201,169,97,0.18), transparent 55%)`,
+          background: `radial-gradient(720px circle at ${mouse.x * 100}% ${mouse.y * 100}%, rgba(201,169,97,0.14), transparent 55%)`,
           transition: 'background 0.3s ease',
         }}
       />
 
-      {/* 3D rotating gold gyroscope ring */}
-      <div className="hero-gyro hidden md:block">
-        <div className="hero-gyro-inner">
-          <div className="hero-gyro-ring" />
-          <div className="hero-gyro-ring hero-gyro-ring-b" />
-          <div className="hero-gyro-ring hero-gyro-ring-c" />
-          <div className="hero-gyro-core" />
-        </div>
-      </div>
+      {/* Grain */}
+      <div className="hero-grain z-[2]" />
 
-      {/* Floating gold bokeh */}
+      {/* Bokeh accents */}
       <span className="hero-bokeh b1" />
       <span className="hero-bokeh b2" />
       <span className="hero-bokeh b3" />
-      <span className="hero-bokeh b4" />
-
-      {/* Grain overlay */}
-      <div className="hero-grain" />
 
       {/* Top meta strip */}
-      <div className="absolute top-0 inset-x-0 z-10 hidden md:flex items-center justify-between px-12 pt-16 text-[var(--ivory-faint)] font-mono-mini">
+      <div className="absolute top-0 inset-x-0 z-20 hidden md:flex items-center justify-between px-10 pt-6 text-[var(--ivory-faint)] font-mono-mini">
         <div className="flex items-center gap-4">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
-          <span>Live Studio</span>
-          <span className="opacity-40">·</span>
-          <span>Dubai {dubaiTime} GST</span>
+          <span>Live Studio · Dubai {dubaiTime} GST</span>
         </div>
-        <div className="flex items-center gap-4">
-          <span>Reel 01 / 06</span>
-          <span className="opacity-40">·</span>
-          <span>The Practice</span>
-        </div>
+        <div>Issue 01 · Chapter 01 / 06</div>
       </div>
 
-      {/* Content overlay */}
-      <div className="relative z-10 h-full flex flex-col px-6 md:px-12 pt-24 pb-6">
-        <div className="flex-1 flex flex-col justify-center max-w-[1440px] mx-auto w-full" style={{ perspective: '1400px' }}>
+      {/* 12-column editorial grid */}
+      <div className="relative z-10 h-full max-w-[1600px] mx-auto grid grid-cols-12 gap-4 md:gap-6 px-5 md:px-10 pt-20 pb-8">
+
+        {/* LEFT FLANK · slogan */}
+        <MH.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
+          className="col-span-12 md:col-span-4 flex flex-col justify-end md:justify-center z-10"
+        >
+          <Eyebrow num="01" label="Infinity · Dubai · Since 2013" />
+          <h1 className="mt-6 font-display leading-[0.94] text-ivory" style={{ fontSize: 'clamp(40px, 5.6vw, 88px)' }}>
+            <span className="block"><SplitLines text={['Architecture,']} /></span>
+            <span className="block"><SplitLines text={['delivered.']} delay={0.12}>
+              <em className="font-display-it text-gradient-gold">delivered.</em>
+            </SplitLines></span>
+            <span className="hero-arch-flare" />
+          </h1>
+          <p className="mt-6 text-[var(--ivory-dim)] text-sm md:text-base leading-relaxed max-w-sm">
+            A single, senior atelier for every high-end interior, fit-out and thematic project across the United Arab Emirates.
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Magnetic strength={0.2}><button className="btn-gold">View Recent Work →</button></Magnetic>
+            <Magnetic strength={0.2}><button className="btn-ghost">The Studio</button></Magnetic>
+          </div>
+        </MH.div>
+
+        {/* CENTER · architectural 3D parallax stack */}
+        <div
+          className="hidden md:flex col-span-6 items-center justify-center relative z-[5]"
+          style={{ perspective: '1600px' }}
+        >
           <MH.div
-            className="max-w-5xl"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1], delay: 0.15 }}
+            className="relative w-full max-h-full"
             style={{
-              transform: `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
+              aspectRatio: '3 / 4',
+              maxHeight: 'calc(100vh - 180px)',
               transformStyle: 'preserve-3d',
+              transform: `rotateY(${tiltY}deg) rotateX(${tiltX}deg)`,
               transition: 'transform 0.35s cubic-bezier(.2,.8,.2,1)',
             }}
           >
-            <Eyebrow num="01 / 06" label="Infinity Turnkey · Dubai, Since 2013" />
-
-            <h1
-              className="mt-5 font-display leading-[0.94] relative"
-              style={{ fontSize: 'clamp(44px, 8vw, 128px)' }}
+            {/* Deepest: blurred atelier */}
+            <div
+              className="absolute inset-[-8%] overflow-hidden"
+              style={{ transform: 'translateZ(-100px) scale(0.92)' }}
             >
-              <span className="block text-ivory relative">
-                <SplitLines text={['Creative solutions']} />
-                <span className="hero-line-flare" />
-              </span>
-              <span className="block relative mt-1" style={{ transform: 'translateZ(30px)' }}>
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 font-display-it text-gold opacity-[0.18]"
-                  style={{ transform: 'translate3d(6px, 8px, -20px)', filter: 'blur(1px)' }}
-                >
-                  by Infinity.
-                </span>
-                <span className="line-mask block">
-                  <span className="line-inner in" style={{ transitionDelay: '0.35s' }}>
-                    <em className="font-display-it text-gradient-gold">by Infinity.</em>
-                  </span>
-                </span>
-              </span>
-            </h1>
+              <img
+                src={HERO_ARCH_DEEP}
+                alt=""
+                aria-hidden="true"
+                className="w-full h-full object-cover"
+                style={{ filter: 'grayscale(1) blur(18px) brightness(0.5)' }}
+              />
+            </div>
 
-            <MH.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.85 }}
-              className="mt-8 grid md:grid-cols-12 gap-5 md:gap-10 items-end"
+            {/* Main architectural plate */}
+            <div
+              className="absolute inset-0 overflow-hidden border border-[rgba(201,169,97,0.18)] shadow-[0_60px_140px_rgba(0,0,0,0.65)]"
+              style={{ transform: 'translateZ(0)' }}
             >
-              <p className="md:col-span-6 text-[var(--ivory-dim)] text-sm md:text-base leading-relaxed max-w-lg">
-                The design and contracting atelier. A single, senior team for every high-end interior, fit-out and thematic project across the United Arab Emirates.
-              </p>
-              <div className="md:col-span-6 flex flex-wrap gap-3 md:justify-end">
-                <Magnetic strength={0.2}><button className="btn-gold">View Recent Work →</button></Magnetic>
-                <Magnetic strength={0.2}><button className="btn-ghost">The Studio</button></Magnetic>
-              </div>
-            </MH.div>
+              <img
+                src={HERO_ARCH_MAIN}
+                alt="Architectural detail"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  filter: 'grayscale(0.35) contrast(1.15) brightness(0.78) sepia(0.08)',
+                  transform: `translate(${(mouse.x - 0.5) * -18}px, ${(mouse.y - 0.5) * -14}px) scale(1.06)`,
+                  transition: 'transform 0.5s cubic-bezier(.2,.8,.2,1)',
+                }}
+              />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.55) 100%)' }} />
+            </div>
+
+            {/* Gold hairline frame (floats forward) */}
+            <div
+              className="absolute inset-5 border border-[var(--gold)] pointer-events-none hero-arch-frame"
+              style={{ transform: 'translateZ(60px)', opacity: 0.85 }}
+            />
+
+            {/* Caption pill */}
+            <div
+              className="absolute -bottom-3 left-6 bg-[var(--ink)] border border-[var(--gold)] px-4 py-2"
+              style={{ transform: 'translateZ(90px)' }}
+            >
+              <div className="font-mono-mini text-gold">Sheet 04</div>
+              <div className="font-display text-ivory text-base mt-0.5">Al Qusais atelier</div>
+            </div>
+
+            {/* Dimension ticks */}
+            <div
+              className="absolute -top-4 right-10 font-mono-mini text-[var(--ivory-faint)]"
+              style={{ transform: 'translateZ(40px)' }}
+            >
+              1 : 25 · plan
+            </div>
           </MH.div>
         </div>
 
-        {/* Sector pills */}
+        {/* RIGHT RAIL · mono meta column */}
         <MH.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.05 }}
-          className="shrink-0 pt-6"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1], delay: 0.3 }}
+          className="hidden md:flex col-span-2 flex-col justify-between items-end text-right z-10 py-2"
         >
-          <div className="flex items-center justify-between mb-3">
-            <div className="font-mono-mini text-[var(--ivory-faint)]">Sectors we work in</div>
-            <div className="font-mono-mini text-gold hidden md:block">{SECTORS.find(s => s.id === active)?.label} · showcase</div>
+          <div className="font-mono-mini text-[var(--ivory-faint)] space-y-4 leading-relaxed">
+            <div><span className="text-gold">⁜</span> EST · 2013</div>
+            <div>DXB · 25.26°N</div>
+            <div>55.30°E · ATL</div>
           </div>
-          <div className="flex flex-wrap gap-2.5">
-            {SECTORS.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setActive(s.id)}
-                className={`sector-pill ${active === s.id ? 'on' : ''}`}
-              >
-                {s.label}
-              </button>
-            ))}
+
+          <div className="w-px h-20 bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent my-6 self-end mr-3" />
+
+          <div className="font-mono-mini text-gold space-y-4 leading-relaxed">
+            <div>REEL 01 / 06</div>
+            <div>THE PRACTICE</div>
+            <div className="flex items-center justify-end gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-pulse" />LIVE</div>
+          </div>
+
+          <div className="mt-auto flex flex-col items-end gap-2 text-[var(--ivory-faint)] pb-2">
+            <span className="font-mono-mini">SCROLL</span>
+            <span className="hero-scroll-cue" />
           </div>
         </MH.div>
       </div>
 
-      {/* Scroll cue */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 pointer-events-none hidden md:flex flex-col items-center gap-2 text-[var(--ivory-faint)]">
-        <span className="font-mono-mini">Scroll</span>
-        <span className="hero-scroll-cue" />
+      {/* Mobile centerpiece image */}
+      <div className="md:hidden absolute inset-x-6 bottom-6 h-[44vh] z-[3] pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden border border-[rgba(201,169,97,0.2)] shadow-[0_30px_80px_rgba(0,0,0,0.6)]">
+          <img src={HERO_ARCH_MAIN} alt="Architectural detail" className="w-full h-full object-cover" style={{ filter: 'grayscale(0.35) contrast(1.1) brightness(0.78)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.6) 100%)' }} />
+        </div>
+        <div className="absolute -bottom-3 left-4 bg-[var(--ink)] border border-[var(--gold)] px-3 py-1.5">
+          <div className="font-mono-mini text-gold">Sheet 04 · Al Qusais</div>
+        </div>
       </div>
     </section>
   );
@@ -692,10 +707,10 @@ function CEOLetter() {
 }
 
 /* ---------- Home Page ---------- */
-function HomePage({ overlayOpacity }) {
+function HomePage() {
   return (
     <>
-      <HomeHero overlayOpacity={overlayOpacity} />
+      <HomeHero />
       <AboutSnippet />
       <ServicesHScroll />
       <CategoriesScroll />
