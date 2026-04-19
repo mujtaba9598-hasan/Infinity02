@@ -353,10 +353,27 @@ function ContactPage() {
               style={{ filter: 'grayscale(1) invert(0.92) contrast(0.9)' }}
               loading="lazy"
             />
+
+            {/* Custom colourful pin overlaid on the grayscale map */}
+            <div className="map-pin absolute pointer-events-none" style={{ left: '49.7%', top: '51%' }}>
+              <span className="map-pin-ring" />
+              <span className="map-pin-ring map-pin-ring-2" />
+              <span className="map-pin-dot" />
+            </div>
+
             <div className="absolute top-6 left-6 bg-[var(--ink)] border border-[var(--gold)] px-5 py-3 pointer-events-none">
               <div className="font-mono-mini text-gold">Infinity Turnkey Interiors</div>
               <div className="font-display text-ivory mt-1">Al Qusais, Dubai</div>
             </div>
+
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=25.2920%2C55.3960"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-gold absolute bottom-6 right-6"
+            >
+              Drive me there →
+            </a>
           </div>
         </div>
       </section>
