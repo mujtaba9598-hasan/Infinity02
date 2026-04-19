@@ -136,24 +136,24 @@ function AboutSnippet() {
       <div className="watermark" />
       <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-10 relative">
         <div className="md:col-span-5">
-          <Eyebrow num="02" label="Get To Know Us" />
-          <MaskReveal className="mt-8">
+          <Reveal><Eyebrow num="02" label="Get To Know Us" /></Reveal>
+          <ImageRise className="mt-8" delay={0.1}>
             <Photo src={IMG.studioPortrait} className="aspect-[4/5]" overlay={0.2}>
               <div className="absolute bottom-4 left-4 font-mono-mini text-gold">Studio · Al Qusais atelier</div>
             </Photo>
-          </MaskReveal>
+          </ImageRise>
         </div>
         <div className="md:col-span-7 md:pl-10 flex flex-col justify-center">
           <h2 className="font-display text-[44px] md:text-[80px] leading-[1.02] text-ivory">
             <SplitLines text={['A quiet discipline,', 'loudly delivered.']} />
           </h2>
           <div className="mt-10 space-y-6 max-w-xl text-[var(--ivory-dim)] leading-relaxed text-lg">
-            <p>Since 2013, Infinity Turnkey Interiors has operated as one of Dubai's most considered fit-out houses — customer-centric by principle, result-driven by habit, and singularly obsessed with the detail nobody thinks to mention.</p>
-            <p>Architects, interior designers, project managers and site operatives under one roof — collaborating with nominated suppliers and specialist trades to deliver turnkey interiors across retail, hospitality, commercial, residential and thematic sectors.</p>
+            <Reveal delay={0.2}><p>Since 2013, Infinity Turnkey Interiors has operated as one of Dubai's most considered fit-out houses, customer-centric by principle, result-driven by habit, and singularly obsessed with the detail nobody thinks to mention.</p></Reveal>
+            <Reveal delay={0.3}><p>Architects, interior designers, project managers and site operatives under one roof, collaborating with nominated suppliers and specialist trades to deliver turnkey interiors across retail, hospitality, commercial, residential and thematic sectors.</p></Reveal>
           </div>
-          <div className="mt-10 flex gap-6">
+          <Reveal delay={0.45} className="mt-10 flex gap-6">
             <Magnetic><button onClick={() => go('about')} className="btn-gold">The Full Story →</button></Magnetic>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -340,22 +340,24 @@ function ExpertiseBlock() {
       <div className="watermark" />
       <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-14 relative">
         <div className="md:col-span-5">
-          <MaskReveal>
+          <ImageRise>
             <Photo src={IMG.expertise} className="aspect-[4/5]" overlay={0.2}>
               <div className="absolute bottom-4 left-4 font-mono-mini text-gold">Drawing room · AutoCAD desk</div>
             </Photo>
-          </MaskReveal>
+          </ImageRise>
         </div>
         <div className="md:col-span-7 md:pl-8 flex flex-col justify-center">
-          <Eyebrow num="05" label="Our Expertise" />
-          <h2 className="font-display text-[44px] md:text-[72px] leading-[1.04] mt-6 text-ivory">
-            Measured<br/><em className="font-display-it text-gold">in decades</em>, not deadlines.
-          </h2>
-          <div className="mt-12 space-y-2">
+          <Reveal><Eyebrow num="05" label="Our Expertise" /></Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="font-display text-[44px] md:text-[72px] leading-[1.04] mt-6 text-ivory">
+              Measured<br/><em className="font-display-it text-gold">in decades</em>, not deadlines.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.25} className="mt-12 space-y-2">
             <ExpertiseBar label="Interior Design" pct={95} />
             <ExpertiseBar label="Architecture" pct={85} />
             <ExpertiseBar label="Lighting Work" pct={78} />
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -366,26 +368,26 @@ function ExpertiseBlock() {
 function Testimonials() {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % TESTIMONIALS.length), 7000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % TESTIMONIALS.length), 4500);
     return () => clearInterval(t);
   }, []);
 
   return (
     <section className="relative py-32 px-6 md:px-12 bg-[var(--char)]">
       <div className="max-w-[1200px] mx-auto">
-        <div className="mb-16 text-center">
+        <Reveal className="mb-16 text-center">
           <Eyebrow num="07" label="Client Testimony" />
           <h2 className="font-display text-[44px] md:text-[72px] leading-[1.02] mt-6 text-ivory">What they are saying.</h2>
-        </div>
+        </Reveal>
 
         <div className="relative min-h-[320px]">
           <AP mode="wait">
             <MH.blockquote
               key={idx}
-              initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
-              exit={{ opacity: 0, y: -30, filter: 'blur(8px)' }}
-              transition={{ duration: 0.7, ease: [0.77, 0, 0.18, 1] }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.35, ease: [0.25, 0.8, 0.25, 1] }}
               className="text-center"
             >
               <div className="text-gold text-6xl font-display-it mb-6">"</div>
@@ -439,24 +441,26 @@ function ClientsGrid() {
     <section className="relative py-32 px-6 md:px-12">
       <div className="max-w-[1440px] mx-auto">
         <div className="grid md:grid-cols-12 gap-10 mb-20">
-          <div className="md:col-span-5">
+          <Reveal className="md:col-span-5">
             <Eyebrow num="08" label="Partners & Clients" />
             <h2 className="font-display text-[44px] md:text-[72px] leading-[1.02] mt-6 text-ivory">
               Two hundred clients,<br/><em className="font-display-it text-gold">one standard.</em>
             </h2>
-          </div>
-          <div className="md:col-span-7 md:pl-8 flex items-end">
-            <p className="text-[var(--ivory-dim)] text-lg max-w-lg">A private ledger built over thirteen years — boutique owners, operators, developers and family offices across the United Arab Emirates.</p>
-          </div>
+          </Reveal>
+          <Reveal delay={0.15} className="md:col-span-7 md:pl-8 flex items-end">
+            <p className="text-[var(--ivory-dim)] text-lg max-w-lg">A private ledger built over thirteen years, boutique owners, operators, developers and family offices across the United Arab Emirates.</p>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-6 border-t border-l border-[var(--hairline)]">
-          {clients.map((c, i) => (
-            <div key={i} className="aspect-[3/2] border-b border-r border-[var(--hairline)] flex items-center justify-center relative group overflow-hidden">
-              <div className="absolute inset-0 bg-[var(--gold)] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              <span className="relative font-display text-lg md:text-xl text-[var(--ivory-dim)] group-hover:text-[var(--ink)] transition-colors duration-500">{c}</span>
-            </div>
-          ))}
+          <Stagger step={0.03} y={12} blur={2} duration={0.6}>
+            {clients.map((c, i) => (
+              <div key={i} className="aspect-[3/2] border-b border-r border-[var(--hairline)] flex items-center justify-center relative group overflow-hidden">
+                <div className="absolute inset-0 bg-[var(--gold)] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <span className="relative font-display text-lg md:text-xl text-[var(--ivory-dim)] group-hover:text-[var(--ink)] transition-colors duration-500">{c}</span>
+              </div>
+            ))}
+          </Stagger>
         </div>
       </div>
     </section>
@@ -470,32 +474,36 @@ function BlogPreview() {
     <section className="relative py-32 px-6 md:px-12 bg-[var(--char)]">
       <div className="max-w-[1440px] mx-auto">
         <div className="flex items-end justify-between mb-16">
-          <div>
+          <Reveal>
             <Eyebrow num="09" label="From the Journal" />
             <h2 className="font-display text-[44px] md:text-[72px] leading-[1.02] mt-6 text-ivory">Latest dispatches.</h2>
-          </div>
-          <a onClick={(e)=>{e.preventDefault(); go('news');}} href="#news" className="font-eyebrow text-gold link-underline hidden md:block">Read All →</a>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <a onClick={(e)=>{e.preventDefault(); go('news');}} href="#news" className="font-eyebrow text-gold link-underline hidden md:block">Read All →</a>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {BLOGS.map((b, i) => {
-            const blogImg = [IMG.blog1, IMG.blog2, IMG.blog3][i] || IMG.blog1;
-            return (
-            <article key={i} className="proj group">
-              <Photo src={blogImg} className="aspect-[4/5]" overlay={0.15}>
-                <div className="absolute top-4 left-4 font-mono-mini text-gold bg-[rgba(10,10,10,0.6)] px-3 py-1 backdrop-blur-sm">{b.tag}</div>
-              </Photo>
-              <div className="pt-6">
-                <div className="flex items-center gap-4 font-mono-mini text-[var(--ivory-faint)]">
-                  <span>{b.date}</span><span>·</span><span>{b.author}</span>
+          <Stagger step={0.1}>
+            {BLOGS.map((b, i) => {
+              const blogImg = [IMG.blog1, IMG.blog2, IMG.blog3][i] || IMG.blog1;
+              return (
+              <article key={i} className="proj group">
+                <Photo src={blogImg} className="aspect-[4/5]" overlay={0.15}>
+                  <div className="absolute top-4 left-4 font-mono-mini text-gold bg-[rgba(10,10,10,0.6)] px-3 py-1 backdrop-blur-sm">{b.tag}</div>
+                </Photo>
+                <div className="pt-6">
+                  <div className="flex items-center gap-4 font-mono-mini text-[var(--ivory-faint)]">
+                    <span>{b.date}</span><span>·</span><span>{b.author}</span>
+                  </div>
+                  <h3 className="mt-4 font-display text-2xl md:text-[28px] leading-tight text-ivory group-hover:text-gold transition-colors">{b.title}</h3>
+                  <p className="mt-4 text-[var(--ivory-dim)] leading-relaxed">{b.excerpt}</p>
+                  <div className="mt-6 font-mono-mini text-gold link-underline inline-block">Read Article →</div>
                 </div>
-                <h3 className="mt-4 font-display text-2xl md:text-[28px] leading-tight text-ivory group-hover:text-gold transition-colors">{b.title}</h3>
-                <p className="mt-4 text-[var(--ivory-dim)] leading-relaxed">{b.excerpt}</p>
-                <div className="mt-6 font-mono-mini text-gold link-underline inline-block">Read Article →</div>
-              </div>
-            </article>
-            );
-          })}
+              </article>
+              );
+            })}
+          </Stagger>
         </div>
       </div>
     </section>
@@ -534,7 +542,7 @@ function CEOLetter() {
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, var(--gold) 0%, transparent 50%)' }} />
       <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-10 md:gap-14 items-center relative">
         <div className="md:col-span-5">
-          <MaskReveal>
+          <ImageRise>
             <div className="relative aspect-[4/5] overflow-hidden" style={{ background: 'var(--char2)' }}>
               <img
                 src="assets/owner-ovais-hashmi.png"
@@ -553,25 +561,27 @@ function CEOLetter() {
                 <div className="font-mono-mini text-[var(--ivory-faint)]">Dubai · 2013</div>
               </div>
             </div>
-          </MaskReveal>
+          </ImageRise>
         </div>
 
         <div className="md:col-span-7 md:pl-6">
-          <Eyebrow num="·" label="Letter from the founder" />
-          <h2 className="mt-8 font-display text-[34px] md:text-[56px] leading-[1.04] text-ivory">
-            <em className="font-display-it text-gold">“</em>Every space we sign our name to is a <em className="font-display-it text-gold">signature</em> piece.<em className="font-display-it text-gold">”</em>
-          </h2>
+          <Reveal><Eyebrow num="·" label="Letter from the founder" /></Reveal>
+          <Reveal delay={0.12}>
+            <h2 className="mt-8 font-display text-[34px] md:text-[56px] leading-[1.04] text-ivory">
+              <em className="font-display-it text-gold">“</em>Every space we sign our name to is a <em className="font-display-it text-gold">signature</em> piece.<em className="font-display-it text-gold">”</em>
+            </h2>
+          </Reveal>
           <div className="mt-8 space-y-5 text-[var(--ivory-dim)] leading-relaxed text-lg max-w-2xl">
-            <p>Crafted with pride, finished with the restraint a premium address deserves. Every project is our pride, and luxury, for us, is the discipline of leaving nothing to chance.</p>
-            <p>That has been our measure since 2013, and it is the only one we accept when we hand over a key.</p>
+            <Reveal delay={0.22}><p>Crafted with pride, finished with the restraint a premium address deserves. Every project is our pride, and luxury, for us, is the discipline of leaving nothing to chance.</p></Reveal>
+            <Reveal delay={0.32}><p>That has been our measure since 2013, and it is the only one we accept when we hand over a key.</p></Reveal>
           </div>
-          <div className="mt-10 pt-6 border-t border-[var(--hairline)] flex items-center justify-between flex-wrap gap-4">
+          <Reveal delay={0.45} className="mt-10 pt-6 border-t border-[var(--hairline)] flex items-center justify-between flex-wrap gap-4">
             <div>
               <div className="font-display text-ivory text-xl">Ovais Hashmi</div>
               <div className="font-mono-mini text-[var(--ivory-faint)] mt-1">Founder · Infinity Turnkey Interior Decoration L.L.C</div>
             </div>
             <div className="font-mono-mini text-gold">Al Qusais · Dubai · Since 2013</div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

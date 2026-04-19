@@ -151,6 +151,20 @@ body { cursor: none; }
 }
 .mask-reveal.in { clip-path: inset(0 0 0 0); }
 
+/* ImageRise: clip reveals from bottom while image eases from a slight zoom in */
+.image-rise {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.2s cubic-bezier(.77,0,.18,1);
+  overflow: hidden;
+}
+.image-rise.in { clip-path: inset(0 0 0 0); }
+.image-rise img {
+  transform: scale(1.12);
+  transition: transform 2.2s cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+.image-rise.in img { transform: scale(1); }
+
 /* ========== BUTTONS ========== */
 .btn-gold {
   position: relative;

@@ -119,13 +119,58 @@ function MaskReveal({ children, className = "", delay = 0 }) {
   const [ref, inView] = useInView({ threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
   const [forceIn, setForceIn] = useState(false);
   useEffect(() => {
-    // Safety: if the observer never fires (tall viewports, clip-path quirks, etc.)
-    // force reveal after a short delay so the image never stays hidden.
     const id = setTimeout(() => setForceIn(true), 1400);
     return () => clearTimeout(id);
   }, []);
   return (
     <div ref={ref} className={`mask-reveal ${(inView || forceIn) ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}s` }}>
+      {children}
+    </div>
+  );
+}
+
+/* ---------- Reveal: fade + slide + soft blur on enter viewport ---------- */
+function Reveal({ children, className = "", delay = 0, y = 24, blur = 4, duration = 1.0, as: Tag = 'div' }) {
+  const [ref, inView] = useInView({ threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+  const [forceIn, setForceIn] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setForceIn(true), 1600);
+    return () => clearTimeout(id);
+  }, []);
+  const active = inView || forceIn;
+  const style = {
+    opacity: active ? 1 : 0,
+    transform: active ? 'translate3d(0,0,0)' : `translate3d(0,${y}px,0)`,
+    filter: active ? 'blur(0px)' : `blur(${blur}px)`,
+    transition: `opacity ${duration}s cubic-bezier(.2,.8,.2,1) ${delay}s, transform ${duration}s cubic-bezier(.2,.8,.2,1) ${delay}s, filter ${duration}s cubic-bezier(.2,.8,.2,1) ${delay}s`,
+    willChange: 'opacity, transform, filter',
+  };
+  return <Tag ref={ref} className={className} style={style}>{children}</Tag>;
+}
+
+/* ---------- Stagger: clones children with sequential reveal delays ---------- */
+function Stagger({ children, step = 0.08, base = 0, y = 20, blur = 3, duration = 0.9 }) {
+  return React.Children.map(children, (child, i) => {
+    if (!React.isValidElement(child)) return child;
+    return <Reveal delay={base + i * step} y={y} blur={blur} duration={duration} as={'div'}>{child}</Reveal>;
+  });
+}
+
+/* ---------- ImageRise: MaskReveal + slight zoom-out as it reveals ---------- */
+function ImageRise({ children, className = '', delay = 0 }) {
+  const [ref, inView] = useInView({ threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+  const [forceIn, setForceIn] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setForceIn(true), 1600);
+    return () => clearTimeout(id);
+  }, []);
+  const active = inView || forceIn;
+  return (
+    <div
+      ref={ref}
+      className={`image-rise ${active ? 'in' : ''} ${className}`}
+      style={{ transitionDelay: `${delay}s` }}
+    >
       {children}
     </div>
   );
@@ -144,4 +189,4 @@ function DrawLine({ className = "", delay = 0, duration = 1.2 }) {
 }
 
 /* expose for other scripts */
-Object.assign(window, { SplitLines, Eyebrow, Magnetic, Placeholder, Counter, ExpertiseBar, MaskReveal, DrawLine, useInView, RouteCtx, useRoute });
+Object.assign(window, { SplitLines, Eyebrow, Magnetic, Placeholder, Counter, ExpertiseBar, MaskReveal, Reveal, Stagger, ImageRise, DrawLine, useInView, RouteCtx, useRoute });
