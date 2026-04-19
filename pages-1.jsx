@@ -60,13 +60,13 @@ function AboutPage() {
       <section className="relative py-32 px-6 md:px-12 bg-[var(--char)]">
         <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-14 relative">
           <div className="md:col-span-5">
-            <ImageRise>
+            <Reveal y={30} duration={1.1}>
               <div className="relative aspect-[4/5] bg-[var(--char2)] overflow-hidden">
-                <img src="assets/owner-ovais-hashmi.png" alt="Ovais Hashmi, CEO" className="w-full h-full object-cover" style={{ filter: 'grayscale(0.25) contrast(1.05) brightness(0.92)' }} />
+                <img src="assets/owner-ovais-hashmi.png" alt="Ovais Hashmi, CEO" className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'grayscale(0.25) contrast(1.05) brightness(0.92)' }} />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.6) 100%)' }} />
                 <div className="absolute bottom-6 left-6 font-mono-mini text-gold">Al Qusais · 2025</div>
               </div>
-            </ImageRise>
+            </Reveal>
           </div>
           <div className="md:col-span-7 md:pl-6 flex flex-col justify-center">
             <Reveal><Eyebrow num="Leadership" label="A word from the CEO" /></Reveal>
