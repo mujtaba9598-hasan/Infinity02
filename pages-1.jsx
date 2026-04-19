@@ -1,6 +1,188 @@
 /* ============ ABOUT + SERVICES + PROJECTS PAGES ============ */
 const { motion: MP, AnimatePresence: APP } = window.FramerMotion;
 
+/* ---------- Inline icon set (adapted from lucide for babel-standalone, no lucide-react import) ---------- */
+const _IP = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true };
+const _IP14 = Object.assign({}, _IP, { width: 14, height: 14, strokeWidth: 1.8 });
+const IPen       = () => <svg {..._IP}><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>;
+const IHome      = () => <svg {..._IP}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+const IPenTool   = () => <svg {..._IP}><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/></svg>;
+const IPaint     = () => <svg {..._IP}><path d="M6.5 11.5 12.5 5.5a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.4 0L6.5 12.9a1 1 0 0 1 0-1.4z"/><path d="M18 13l2-2M5 21c0 1 .5 1.5 1.5 1.5S8 22 8 21c0-1-1.5-3-1.5-3S5 20 5 21z"/></svg>;
+const IRuler     = () => <svg {..._IP}><path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4z"/><path d="m14.5 12.5 2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/></svg>;
+const IBuilding  = () => <svg {..._IP}><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></svg>;
+const IAward     = () => <svg {..._IP}><circle cx="12" cy="8" r="6"/><path d="M15.5 12.9 17 22l-5-3-5 3 1.5-9.1"/></svg>;
+const IUsers     = () => <svg {..._IP}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const ICalendar  = () => <svg {..._IP}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>;
+const ITrend     = () => <svg {..._IP}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
+const ISparkles  = () => <svg {..._IP14}><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>;
+const ICheck     = () => <svg {..._IP14}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+const IStar      = () => <svg {..._IP14}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
+const IArrow     = () => <svg {..._IP14}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>;
+const IZap       = () => <svg {..._IP14}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+
+/* ---------- About / What We Do (adapted from 21st.dev about-us-section.tsx) ---------- */
+function AboutWhatWeDo() {
+  const services = [
+    { Icon: IPen,      Sec: ISparkles, title: 'Interior Architecture', body: 'End to end interior schemes, from concept through construction. A senior team accountable for every drawing and every site day.', pos: 'left' },
+    { Icon: IHome,     Sec: ICheck,    title: 'Exterior & Facade',     body: 'Aluminium and glass. Curtain walls, cladding and bespoke metalwork engineered for the Gulf climate.', pos: 'left' },
+    { Icon: IPenTool,  Sec: IStar,     title: 'Design Authorship',     body: 'Concept to detail, drawn in house. Every scheme carries a signature, every joint is specified, nothing is left to chance.', pos: 'left' },
+    { Icon: IPaint,    Sec: ISparkles, title: 'Finishes & Decoration', body: 'Joinery, stone, upholstery, painting. A curated network of long-standing trades delivering the finish a premium address deserves.', pos: 'right' },
+    { Icon: IRuler,    Sec: ICheck,    title: 'Planning & Programme',  body: 'Meticulous planning from day one. Clear timelines, transparent budgets, and a project director accountable to your calendar.', pos: 'right' },
+    { Icon: IBuilding, Sec: IStar,     title: 'Turnkey Execution',     body: 'One contract. One team. One delivery. From strip-out through handover, we run the site, you receive the key.', pos: 'right' },
+  ];
+
+  const stats = [
+    { Icon: IAward,    value: 340, label: 'Projects Delivered',    suffix: '+' },
+    { Icon: IUsers,    value: 200, label: 'Clients on the Ledger', suffix: '+' },
+    { Icon: ICalendar, value: 13,  label: 'Years in Dubai',        suffix: ''  },
+    { Icon: ITrend,    value: 48,  label: 'Specialists In-house',  suffix: ''  },
+  ];
+
+  return (
+    <section className="relative py-24 md:py-32 px-6 md:px-12 bg-[var(--ink)] overflow-hidden">
+      {/* Decorative blurs */}
+      <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-[var(--gold)]/5 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-[var(--gold)]/8 blur-3xl pointer-events-none" />
+
+      {/* Floating dots */}
+      <MP.div
+        className="absolute top-1/2 left-[22%] w-3 h-3 rounded-full bg-[var(--gold)]/50 pointer-events-none"
+        animate={{ y: [0, -15, 0], opacity: [0.45, 1, 0.45] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <MP.div
+        className="absolute bottom-[30%] right-[22%] w-4 h-4 rounded-full bg-[var(--gold)]/30 pointer-events-none"
+        animate={{ y: [0, 20, 0], opacity: [0.45, 1, 0.45] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <Reveal className="flex flex-col items-center mb-5">
+          <span className="font-mono-mini text-gold mb-3 flex items-center gap-2">
+            <IZap /> Discover our practice
+          </span>
+          <h2 className="font-display text-[44px] md:text-[64px] text-ivory text-center leading-[1.02]">
+            Our Practice<span className="font-display-it text-gold">.</span>
+          </h2>
+          <DrawLine className="w-24 mt-5" />
+        </Reveal>
+
+        <Reveal delay={0.15}>
+          <p className="text-center max-w-2xl mx-auto mb-16 text-[var(--ivory-dim)] leading-relaxed">
+            Architects, interior designers and project managers under one roof. We blend design authorship with on-site discipline to deliver interiors that feel inevitable, on a programme that holds.
+          </p>
+        </Reveal>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          <div className="space-y-14">
+            {services.filter(s => s.pos === 'left').map((s, i) => (
+              <AboutServiceItem key={`l-${i}`} s={s} direction="left" delay={i * 0.1} />
+            ))}
+          </div>
+
+          {/* Center image */}
+          <div className="flex justify-center items-center order-first md:order-none mb-8 md:mb-0">
+            <Reveal className="relative w-full max-w-xs" y={30}>
+              <div className="relative aspect-[3/4] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.6)] group cursor-none">
+                <img
+                  src={IMG.atelier}
+                  alt="Infinity studio, Al Qusais atelier"
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  style={{ filter: 'grayscale(0.35) contrast(1.08) brightness(0.72)' }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                  <button className="inline-flex items-center gap-2 bg-[var(--gold)] text-[var(--ink)] px-4 py-2 rounded-full font-mono-mini tracking-wider uppercase text-[10px] hover:bg-[var(--gold-bright)] transition-colors">
+                    Our Portfolio <IArrow />
+                  </button>
+                </div>
+              </div>
+              <div className="absolute inset-0 border border-[var(--gold)]/60 -m-3 z-[-1]" />
+              <MP.div className="absolute -top-4 -right-8 w-14 h-14 rounded-full bg-[var(--gold)]/10 pointer-events-none" animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} />
+              <MP.div className="absolute -bottom-6 -left-10 w-16 h-16 rounded-full bg-[var(--gold)]/15 pointer-events-none" animate={{ y: [0, 10, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }} />
+              <MP.div className="absolute -top-10 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[var(--gold)] pointer-events-none" animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }} />
+              <MP.div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[var(--gold)] pointer-events-none" animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }} />
+            </Reveal>
+          </div>
+
+          <div className="space-y-14">
+            {services.filter(s => s.pos === 'right').map((s, i) => (
+              <AboutServiceItem key={`r-${i}`} s={s} direction="right" delay={i * 0.1} />
+            ))}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-24 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          {stats.map((s, i) => (
+            <AboutStatCell key={i} stat={s} delay={i * 0.08} />
+          ))}
+        </div>
+
+        {/* CTA */}
+        <Reveal delay={0.3} className="mt-16">
+          <div className="bg-[var(--char)] border border-[var(--hairline)] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="font-display text-2xl md:text-3xl text-ivory mb-2">Ready to build something iconic?</h3>
+              <p className="text-[var(--ivory-dim)]">One brief, one conversation, one signature on the package.</p>
+            </div>
+            <Magnetic><button className="btn-gold">Begin a Conversation <IArrow /></button></Magnetic>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function AboutServiceItem({ s, direction, delay }) {
+  const { Icon, Sec } = s;
+  return (
+    <MP.div
+      className="flex flex-col group"
+      initial={{ x: direction === 'left' ? -20 : 20, opacity: 0, filter: 'blur(4px)' }}
+      whileInView={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.7, delay, ease: [0.2, 0.8, 0.2, 1] }}
+    >
+      <div className="flex items-center gap-3 mb-3">
+        <div className="text-gold bg-[var(--gold)]/10 p-3 rounded-lg relative transition-colors duration-300 group-hover:bg-[var(--gold)]/25 border border-[var(--hairline)]">
+          <Icon />
+          <span className="absolute -top-1 -right-1 text-[var(--gold)] opacity-80"><Sec /></span>
+        </div>
+        <h3 className="font-display text-xl text-ivory group-hover:text-gold transition-colors">{s.title}</h3>
+      </div>
+      <p className="text-sm text-[var(--ivory-dim)] leading-relaxed pl-14">{s.body}</p>
+      <div className="mt-3 pl-14 flex items-center text-gold text-xs font-mono-mini opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <span className="flex items-center gap-1">Learn more <IArrow /></span>
+      </div>
+    </MP.div>
+  );
+}
+
+function AboutStatCell({ stat, delay }) {
+  const { Icon, value, label, suffix } = stat;
+  return (
+    <MP.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, delay }}
+    >
+      <GlowCard className="bg-[var(--char)]/70 backdrop-blur-sm p-6 flex flex-col items-center text-center group hover:bg-[var(--char2)] transition-colors border border-[var(--hairline)]">
+        <div className="w-12 h-12 rounded-full bg-[var(--gold)]/10 flex items-center justify-center mb-4 text-gold group-hover:bg-[var(--gold)]/25 transition-colors border border-[var(--hairline)]">
+          <Icon />
+        </div>
+        <div className="font-display text-[42px] md:text-[48px] text-gold leading-none flex items-baseline">
+          <Counter to={value} suffix={suffix} />
+        </div>
+        <p className="text-[var(--ivory-dim)] text-xs mt-2 font-mono-mini tracking-wider uppercase">{label}</p>
+        <div className="w-8 h-px bg-[var(--gold)] mt-3 transition-all duration-500 group-hover:w-16" />
+      </GlowCard>
+    </MP.div>
+  );
+}
+
 /* ============================================================ */
 /* ABOUT PAGE                                                    */
 /* ============================================================ */
@@ -110,27 +292,8 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Offering */}
-      <section className="relative py-32 px-6 md:px-12">
-        <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-10">
-          <div className="md:col-span-5">
-            <Eyebrow num="Offering" label="What We Offer" />
-            <h2 className="font-display text-[44px] md:text-[80px] leading-[1.02] mt-6 text-ivory">
-              One contract.<br/><em className="font-display-it text-gold">Every trade.</em>
-            </h2>
-          </div>
-          <div className="md:col-span-7 md:pl-8">
-            <p className="text-[var(--ivory-dim)] text-xl leading-relaxed">
-              We specialise in turnkey interior fit-out — every trade, every discipline, one senior team. We collaborate with architects, interior designers and nominated suppliers to deliver high-end fit-out and refurbishment across every sector.
-            </p>
-            <div className="mt-12 space-y-2">
-              <ExpertiseBar label="Interior Design" pct={95} />
-              <ExpertiseBar label="Architecture" pct={85} />
-              <ExpertiseBar label="Lighting Work" pct={78} />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Our Practice (adapted 21st.dev about-us-section) */}
+      <AboutWhatWeDo />
 
       {/* Partner Network */}
       <section className="relative py-32 px-6 md:px-12 bg-[var(--char)]">
