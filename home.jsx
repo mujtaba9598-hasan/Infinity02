@@ -127,7 +127,7 @@ function ExpandingHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[var(--ink)] overflow-hidden"
+      className="relative bg-[var(--ink)]"
       style={{ height: compact ? '180vh' : '200vh' }}
     >
       <div className="sticky top-0 w-full h-[100dvh] flex items-center justify-center overflow-hidden">
@@ -735,18 +735,18 @@ function Testimonials() {
           <h2 className="font-display text-[44px] md:text-[72px] leading-[1.02] mt-6 text-ivory">What they are saying.</h2>
         </Reveal>
 
-        <div className="relative min-h-[320px]">
-          <AP mode="wait">
+        <div className="relative" style={{ minHeight: 'clamp(360px, 48vh, 520px)' }}>
+          <AP mode="sync">
             <MH.blockquote
               key={idx}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35, ease: [0.25, 0.8, 0.25, 1] }}
-              className="text-center"
+              transition={{ duration: 0.45, ease: [0.25, 0.8, 0.25, 1] }}
+              className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
             >
-              <div className="text-gold text-6xl font-display-it mb-6">"</div>
-              <p className="font-display text-2xl md:text-4xl leading-[1.3] text-ivory max-w-4xl mx-auto">{TESTIMONIALS[idx].quote}</p>
+              <div className="text-gold text-6xl font-display-it mb-6 leading-none">"</div>
+              <p className="font-display text-2xl md:text-4xl leading-[1.3] text-ivory max-w-4xl">{TESTIMONIALS[idx].quote}</p>
               <footer className="mt-10">
                 <div className="font-display text-xl text-gold">{TESTIMONIALS[idx].name}</div>
                 <div className="font-mono-mini text-[var(--ivory-faint)] mt-2">{TESTIMONIALS[idx].role}</div>
