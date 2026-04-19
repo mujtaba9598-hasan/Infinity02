@@ -59,7 +59,7 @@ const BLOGS = [
      - top meta strip, bottom progress bar and after-hero divider are my own
        additions, not in the reference pattern
 ------------------------------------------------------------------------------- */
-const HERO_BG_SRC    = 'https://images.unsplash.com/photo-1486304873000-235643847519?w=1920&q=85';
+const HERO_BG_SRC    = 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1920&q=85';
 const HERO_VIDEO_SRC = 'assets/hero-video.mp4';
 
 function ExpandingHero() {
