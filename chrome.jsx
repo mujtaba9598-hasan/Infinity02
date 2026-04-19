@@ -119,16 +119,97 @@ const NAV_LINKS = [
   { id: 'contact', label: 'Contact' },
 ];
 
+/* ---------- Fluid mobile menu icons (inline lucide replacements) ---------- */
+const _CI = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true };
+const CIMenu  = ({ size = 24 }) => <svg width={size} height={size} {..._CI}><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>;
+const CIX     = ({ size = 24 }) => <svg width={size} height={size} {..._CI}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+const CIHome  = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+const CIUser  = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const CIGrid  = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
+const CIBrief = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
+const CIUsers = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const CIPaper = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>;
+const CIMail  = ({ size = 22 }) => <svg width={size} height={size} {..._CI}><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 7 12 13 22 7"/></svg>;
+
+const NAV_ICONS = {
+  home: <CIHome />, about: <CIUser />, services: <CIGrid />,
+  projects: <CIBrief />, associates: <CIUsers />, news: <CIPaper />, contact: <CIMail />,
+};
+
+/* ---------- FluidMenu: 21st.dev fluid-menu adapted for babel-standalone
+     Source used lucide-react + shadcn cn() + Tailwind arbitrary-variant selectors
+     (e.g. [div[data-expanded=true]_&]). Port keeps the key behaviour:
+      - first circle is the toggle (Menu <-> X with rotate/scale crossfade)
+      - other circles are stacked behind at rest; on expand they translate down
+        by index * 56px and fade in with cubic-bezier easing
+      - clipPath jitter (50% at 50% 55%) on all but the last chip gives the
+        melting-drip visual when they collapse back together
+      - dark luxury palette: char2 bg, gold icon, hairline border
+      - active route gets a gold bg instead of gold icon
+------------------------------------------------------------------------- */
+function FluidMenu() {
+  const { route, go } = useRoute();
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => { setExpanded(false); }, [route]);
+
+  const handleItem = (id) => {
+    setExpanded(false);
+    setTimeout(() => go(id), 120);
+  };
+
+  return (
+    <div className="relative w-16 h-16 lg:hidden" data-expanded={expanded}>
+      {/* Toggle */}
+      <button
+        onClick={() => setExpanded(v => !v)}
+        className="relative w-16 h-16 rounded-full bg-[var(--char2)] border border-[var(--hairline)] text-gold flex items-center justify-center z-50 shadow-[0_8px_24px_rgba(0,0,0,0.55)] hover:bg-[var(--gold)] hover:text-[var(--ink)] transition-colors duration-300"
+        aria-label={expanded ? 'Close menu' : 'Open menu'}
+        aria-expanded={expanded}
+      >
+        <span className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out ${expanded ? 'opacity-0 scale-0 rotate-180' : 'opacity-100 scale-100 rotate-0'}`}>
+          <CIMenu />
+        </span>
+        <span className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out ${expanded ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-0 -rotate-180'}`}>
+          <CIX />
+        </span>
+      </button>
+
+      {/* Orbit items */}
+      {NAV_LINKS.map((l, index) => {
+        const isActive = route === l.id;
+        return (
+          <button
+            key={l.id}
+            onClick={() => handleItem(l.id)}
+            aria-label={l.label}
+            style={{
+              transform: `translateY(${expanded ? (index + 1) * 56 : 0}px) scale(${expanded ? 1 : 0.92})`,
+              opacity: expanded ? 1 : 0,
+              zIndex: 40 - index,
+              clipPath: index === NAV_LINKS.length - 1 ? 'circle(50% at 50% 50%)' : 'circle(50% at 50% 55%)',
+              transition: `transform 360ms cubic-bezier(.4,0,.2,1) ${expanded ? index * 30 : (NAV_LINKS.length - index) * 22}ms, opacity 320ms ease ${expanded ? index * 30 : 0}ms`,
+              pointerEvents: expanded ? 'auto' : 'none',
+              backfaceVisibility: 'hidden',
+            }}
+            className={`absolute top-0 left-0 w-16 h-16 rounded-full flex items-center justify-center will-change-transform border border-[var(--hairline)] shadow-[0_8px_24px_rgba(0,0,0,0.55)] ${isActive ? 'bg-[var(--gold)] text-[var(--ink)]' : 'bg-[var(--char2)] text-gold active:bg-[var(--gold)] active:text-[var(--ink)]'}`}
+          >
+            {NAV_ICONS[l.id]}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function Nav() {
   const { route, go } = useRoute();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  useEffect(() => { setOpen(false); }, [route]);
 
   return (
     <nav className={`sticky top-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[rgba(10,10,10,0.85)] backdrop-blur-xl border-b border-[var(--hairline)]' : 'bg-transparent'}`}>
@@ -138,7 +219,7 @@ function Nav() {
           <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-11 md:h-14 w-auto logo-dark-invert" />
         </a>
 
-        {/* Center nav */}
+        {/* Center nav (desktop) */}
         <div className="hidden lg:flex items-center gap-10">
           {NAV_LINKS.map((l) => (
             <a key={l.id} href={`#${l.id}`} onClick={(e) => { e.preventDefault(); go(l.id); }}
@@ -148,7 +229,7 @@ function Nav() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* CTA (desktop) */}
         <div className="hidden lg:flex items-center gap-6">
           <div className="text-right">
             <div className="font-mono-mini text-[var(--ivory-faint)]">Request a Quote</div>
@@ -162,31 +243,9 @@ function Nav() {
           </Magnetic>
         </div>
 
-        {/* Mobile toggle */}
-        <button onClick={() => setOpen(!open)} className="lg:hidden text-ivory" aria-label="menu">
-          <div className="flex flex-col gap-[5px]">
-            <span className="w-7 h-px bg-ivory" />
-            <span className="w-7 h-px bg-ivory" />
-            <span className="w-5 h-px bg-gold self-end" />
-          </div>
-        </button>
+        {/* Mobile: fluid menu */}
+        <FluidMenu />
       </div>
-
-      <AP>
-        {open && (
-          <M.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden lg:hidden bg-[var(--ink)] border-t border-[var(--hairline)]">
-            <div className="flex flex-col p-8 gap-6">
-              {NAV_LINKS.map((l) => (
-                <a key={l.id} href={`#${l.id}`} onClick={(e) => { e.preventDefault(); go(l.id); }}
-                   className={`font-display text-3xl ${route === l.id ? 'text-gold' : 'text-ivory'}`}>
-                  {l.label}
-                </a>
-              ))}
-              <HoverButton onClick={() => go('contact')} className="self-start mt-4">Start a Project →</HoverButton>
-            </div>
-          </M.div>
-        )}
-      </AP>
     </nav>
   );
 }

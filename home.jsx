@@ -540,17 +540,21 @@ function Testimonials() {
     - pauses on hover, respects prefers-reduced-motion
 -------------------------------------------------------------------- */
 function BrandsOrbit() {
+  // Real brand logos pulled from each partner's official domain via Google's
+  // S2 favicon service (128px). Works without an API key and follows each
+  // brand's canonical favicon, which is usually their mark.
+  const faviconUrl = (domain) => `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
   const BRANDS = [
-    { name: 'RAK Ceramics',       mono: 'RAK' },
-    { name: 'Jotun',              mono: 'JT'  },
-    { name: 'Dulux',              mono: 'DX'  },
-    { name: 'Saint-Gobain',       mono: 'S-G' },
-    { name: 'Danube',             mono: 'DN'  },
-    { name: 'Arabian Aluminium',  mono: 'AA'  },
-    { name: 'Grohe',              mono: 'GR'  },
-    { name: 'Kohler',             mono: 'KO'  },
-    { name: 'Hafele',             mono: 'HF'  },
-    { name: 'Dorma',              mono: 'DM'  },
+    { name: 'RAK Ceramics',       mono: 'RAK', logo: faviconUrl('rakceramics.com')   },
+    { name: 'Jotun',              mono: 'JT',  logo: faviconUrl('jotun.com')         },
+    { name: 'Dulux',              mono: 'DX',  logo: faviconUrl('dulux.co.uk')       },
+    { name: 'Saint-Gobain',       mono: 'S-G', logo: faviconUrl('saint-gobain.com')  },
+    { name: 'Danube Home',        mono: 'DN',  logo: faviconUrl('danubehome.com')    },
+    { name: 'Arabian Aluminium',  mono: 'AA',  logo: faviconUrl('arabianext.com')    },
+    { name: 'Grohe',              mono: 'GR',  logo: faviconUrl('grohe.com')         },
+    { name: 'Kohler',              mono: 'KO', logo: faviconUrl('kohler.com')        },
+    { name: 'Hafele',             mono: 'HF',  logo: faviconUrl('hafele.com')        },
+    { name: 'Dormakaba',          mono: 'DM',  logo: faviconUrl('dormakaba.com')     },
   ];
   const radius    = 150;
   const iconSize  = 56;
@@ -607,9 +611,18 @@ function BrandsOrbit() {
                       left: `calc(50% - ${iconSize / 2}px + ${radius * Math.cos(rad)}px)`,
                       width: iconSize, height: iconSize,
                     }}
-                    className="absolute flex items-center justify-center rounded-full bg-[var(--char2)] border border-[var(--gold)]/50 text-gold brands-orbit-counter font-mono-mini font-semibold text-[11px] tracking-[0.12em] shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+                    className="absolute flex items-center justify-center rounded-full bg-[var(--ivory)] border border-[var(--gold)]/50 brands-orbit-counter overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
                   >
-                    {b.mono}
+                    <img
+                      src={b.logo}
+                      alt={b.name}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement.innerHTML = `<span style="color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:0.12em">${b.mono}</span>`;
+                      }}
+                      className="w-[62%] h-[62%] object-contain"
+                    />
                   </div>
                 );
               })}
