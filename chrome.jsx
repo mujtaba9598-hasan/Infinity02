@@ -311,9 +311,24 @@ function Footer() {
             <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-12 w-auto logo-dark-invert" />
             <span className="font-mono-mini text-[var(--ivory-faint)]">© 2025 Infinity Turnkey Interiors L.L.C · All Rights Reserved</span>
           </div>
-          <div className="flex items-center gap-5">
-            {['Twitter','Facebook','LinkedIn','Pinterest'].map((s) => (
-              <a key={s} href="#" className="font-mono-mini text-[var(--ivory-dim)] hover:text-gold transition-colors">{s}</a>
+          <div className="flex items-center gap-3">
+            <span className="font-mono-mini text-[var(--ivory-faint)] tracking-[0.22em] uppercase text-[10px] mr-2 hidden sm:inline">Follow us</span>
+            {[
+              { name: 'Instagram', href: '#', svg: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/></svg> },
+              { name: 'LinkedIn',  href: '#', svg: <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.9 0h4.37v1.92h.06c.61-1.15 2.1-2.36 4.33-2.36 4.63 0 5.48 3.04 5.48 7v7.44h-4.56v-6.6c0-1.58-.03-3.6-2.19-3.6-2.2 0-2.53 1.71-2.53 3.48V22H8.12V8z"/></svg> },
+              { name: 'Twitter',   href: '#', svg: <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.53 7.46L22 22h-6.9l-4.6-5.93L5 22H2l7.03-8L2 2h6.92l4.15 5.5L18.24 2zm-2.42 18h1.85L7.24 4H5.27l10.56 16z"/></svg> },
+              { name: 'Facebook',  href: '#', svg: <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg> },
+              { name: 'Pinterest', href: '#', svg: <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.23 2.63 7.85 6.34 9.3-.09-.79-.17-2 .03-2.86.19-.78 1.2-4.95 1.2-4.95s-.3-.61-.3-1.52c0-1.42.83-2.48 1.86-2.48.88 0 1.3.66 1.3 1.45 0 .88-.56 2.2-.85 3.42-.24 1.02.51 1.86 1.52 1.86 1.82 0 3.22-1.92 3.22-4.7 0-2.46-1.77-4.18-4.3-4.18-2.93 0-4.64 2.2-4.64 4.47 0 .89.34 1.84.77 2.36.08.1.1.19.07.3-.08.32-.25 1.02-.28 1.16-.04.19-.15.23-.34.14-1.26-.59-2.04-2.42-2.04-3.9 0-3.18 2.3-6.09 6.64-6.09 3.48 0 6.19 2.48 6.19 5.8 0 3.46-2.18 6.25-5.21 6.25-1.02 0-1.97-.53-2.3-1.15l-.62 2.38c-.23.87-.84 1.95-1.25 2.61A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg> },
+            ].map((s) => (
+              <a
+                key={s.name}
+                href={s.href}
+                aria-label={s.name}
+                onClick={(e) => { if (s.href === '#') e.preventDefault(); }}
+                className="w-9 h-9 rounded-full bg-[var(--char2)] border border-[var(--hairline)] text-[var(--ivory-dim)] flex items-center justify-center hover:bg-[var(--gold)] hover:text-[var(--ink)] hover:border-[var(--gold)] transition-colors duration-300"
+              >
+                {s.svg}
+              </a>
             ))}
           </div>
         </div>
