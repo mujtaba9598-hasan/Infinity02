@@ -42,14 +42,16 @@ function AboutPage() {
       <section className="relative py-28 px-6 md:px-12">
         <div className="max-w-[1440px] mx-auto">
           <div className="grid md:grid-cols-3 gap-px bg-[var(--hairline)] border border-[var(--hairline)]">
-            {values.map((v) => (
-              <div key={v.n} className="group bg-[var(--ink)] p-10 md:p-14 relative overflow-hidden transition-colors duration-700 hover:bg-[var(--char2)]">
-                <div className="font-mono-mini text-gold mb-10">{v.n} · Principle</div>
-                <h3 className="font-display text-[40px] md:text-[48px] leading-tight text-ivory">{v.t}</h3>
-                <p className="mt-8 text-[var(--ivory-dim)] leading-relaxed max-w-sm">{v.body}</p>
-                <div className="mt-10 h-px w-12 bg-[var(--gold)] transition-all duration-700 group-hover:w-32" />
-              </div>
-            ))}
+            <Stagger step={0.12} y={30}>
+              {values.map((v) => (
+                <div key={v.n} className="group bg-[var(--ink)] p-10 md:p-14 relative overflow-hidden transition-colors duration-700 hover:bg-[var(--char2)]">
+                  <div className="font-mono-mini text-gold mb-10">{v.n} · Principle</div>
+                  <h3 className="font-display text-[40px] md:text-[48px] leading-tight text-ivory">{v.t}</h3>
+                  <p className="mt-8 text-[var(--ivory-dim)] leading-relaxed max-w-sm">{v.body}</p>
+                  <div className="mt-10 h-px w-12 bg-[var(--gold)] transition-all duration-700 group-hover:w-32" />
+                </div>
+              ))}
+            </Stagger>
           </div>
         </div>
       </section>
@@ -58,23 +60,25 @@ function AboutPage() {
       <section className="relative py-32 px-6 md:px-12 bg-[var(--char)]">
         <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-14 relative">
           <div className="md:col-span-5">
-            <MaskReveal>
+            <ImageRise>
               <div className="relative aspect-[4/5] bg-[var(--char2)] overflow-hidden">
                 <img src="assets/owner-ovais-hashmi.png" alt="Ovais Hashmi, CEO" className="w-full h-full object-cover" style={{ filter: 'grayscale(0.25) contrast(1.05) brightness(0.92)' }} />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.6) 100%)' }} />
                 <div className="absolute bottom-6 left-6 font-mono-mini text-gold">Al Qusais · 2025</div>
               </div>
-            </MaskReveal>
+            </ImageRise>
           </div>
           <div className="md:col-span-7 md:pl-6 flex flex-col justify-center">
-            <Eyebrow num="Leadership" label="A word from the CEO" />
-            <blockquote className="mt-10">
-              <div className="text-gold text-6xl font-display-it leading-none">"</div>
-              <p className="font-display text-[32px] md:text-[48px] leading-[1.15] text-ivory mt-4">
-                We do not pitch a trend. We listen, we draw, and we build what belongs to the client — <em className="font-display-it text-gold">and to the city we build in.</em>
-              </p>
-            </blockquote>
-            <div className="mt-12 grid grid-cols-3 gap-6 max-w-lg">
+            <Reveal><Eyebrow num="Leadership" label="A word from the CEO" /></Reveal>
+            <Reveal delay={0.1}>
+              <blockquote className="mt-10">
+                <div className="text-gold text-6xl font-display-it leading-none">"</div>
+                <p className="font-display text-[32px] md:text-[48px] leading-[1.15] text-ivory mt-4">
+                  We do not pitch a trend. We listen, we draw, and we build what belongs to the client, <em className="font-display-it text-gold">and to the city we build in.</em>
+                </p>
+              </blockquote>
+            </Reveal>
+            <Reveal delay={0.25} className="mt-12 grid grid-cols-3 gap-6 max-w-lg">
               <div>
                 <div className="font-mono-mini text-[var(--ivory-faint)]">Name</div>
                 <div className="font-display text-lg text-ivory mt-2">Ovais Hashmi</div>
@@ -87,10 +91,12 @@ function AboutPage() {
                 <div className="font-mono-mini text-[var(--ivory-faint)]">Tenure</div>
                 <div className="font-display text-lg text-ivory mt-2">Founder · 2013</div>
               </div>
-            </div>
-            <p className="mt-10 text-[var(--ivory-dim)] leading-relaxed max-w-xl">
-              A builder before he was a businessman. Ovais leads the studio the way he leads a site — by walking every corner, asking better questions, and refusing to sign off on work he would not live with.
-            </p>
+            </Reveal>
+            <Reveal delay={0.4}>
+              <p className="mt-10 text-[var(--ivory-dim)] leading-relaxed max-w-xl">
+                A builder before he was a businessman. Ovais leads the studio the way he leads a site, by walking every corner, asking better questions, and refusing to sign off on work he would not live with.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -180,29 +186,35 @@ function ServicesPage() {
         <section key={s.n} className="relative py-24 md:py-32 px-6 md:px-12 border-t border-[var(--hairline)]">
           <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-12 items-center">
             <div className={`md:col-span-6 ${i % 2 === 1 ? 'md:order-2' : ''}`}>
-              <MaskReveal delay={i * 0.05}>
+              <ImageRise delay={0.05}>
                 <Photo src={[IMG.svc1, IMG.svc2, IMG.svc3, IMG.svc4, IMG.svc5, IMG.svc6][i]} className="aspect-[5/6]" overlay={0.2}>
                   <div className="absolute bottom-4 left-4 font-mono-mini text-gold">{s.n} · {s.t}</div>
                 </Photo>
-              </MaskReveal>
+              </ImageRise>
             </div>
             <div className={`md:col-span-6 ${i % 2 === 1 ? 'md:order-1 md:pr-10' : 'md:pl-10'}`}>
-              <div className="font-mono-mini text-gold">{s.n} / 06 · Discipline</div>
-              <h2 className="font-display text-[44px] md:text-[72px] leading-[1.04] mt-6 text-ivory">
-                {s.t}
-                <br/><em className="font-display-it text-gold text-[28px] md:text-[40px]">{s.sub}</em>
-              </h2>
-              <p className="mt-8 text-[var(--ivory-dim)] text-lg leading-relaxed">{s.body}</p>
-              <p className="mt-6 text-[var(--ivory-dim)] leading-relaxed">
-                From first sketch to final snag. Our project directors assemble a bespoke team for every scheme — architects, MEP engineers, joiners, metalworkers — resourced through in-house departments and a network of long-standing manufacturing partners.
-              </p>
-              <div className="mt-10 pt-10 border-t border-[var(--hairline)]">
-                <div className="font-mono-mini text-[var(--ivory-faint)]">Scope includes —</div>
+              <Reveal><div className="font-mono-mini text-gold">{s.n} / 06 · Discipline</div></Reveal>
+              <Reveal delay={0.1}>
+                <h2 className="font-display text-[44px] md:text-[72px] leading-[1.04] mt-6 text-ivory">
+                  {s.t}
+                  <br/><em className="font-display-it text-gold text-[28px] md:text-[40px]">{s.sub}</em>
+                </h2>
+              </Reveal>
+              <Reveal delay={0.22}>
+                <p className="mt-8 text-[var(--ivory-dim)] text-lg leading-relaxed">{s.body}</p>
+              </Reveal>
+              <Reveal delay={0.3}>
+                <p className="mt-6 text-[var(--ivory-dim)] leading-relaxed">
+                  From first sketch to final snag. Our project directors assemble a bespoke team for every scheme: architects, MEP engineers, joiners, metalworkers, resourced through in-house departments and a network of long-standing manufacturing partners.
+                </p>
+              </Reveal>
+              <Reveal delay={0.4} className="mt-10 pt-10 border-t border-[var(--hairline)]">
+                <div className="font-mono-mini text-[var(--ivory-faint)]">Scope includes</div>
                 <div className="font-display text-xl text-ivory mt-3">{s.meta}</div>
-              </div>
-              <div className="mt-10">
+              </Reveal>
+              <Reveal delay={0.5} className="mt-10">
                 <Magnetic><button className="btn-ghost">Discuss a Brief →</button></Magnetic>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>

@@ -62,12 +62,14 @@ function AssociatesPage() {
             <div className="font-mono-mini text-[var(--ivory-faint)] hidden md:block">Sample of active accounts</div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-6 border-t border-l border-[var(--hairline)]">
-            {ASSOC_CLIENTS.map((c, i) => (
-              <div key={i} className="aspect-[3/2] border-b border-r border-[var(--hairline)] flex items-center justify-center relative group overflow-hidden">
-                <div className="absolute inset-0 bg-[var(--gold)] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                <span className="relative font-display text-sm md:text-lg text-[var(--ivory-dim)] group-hover:text-[var(--ink)] transition-colors duration-500 text-center px-2">{c}</span>
-              </div>
-            ))}
+            <Stagger step={0.025} y={14} blur={2} duration={0.6}>
+              {ASSOC_CLIENTS.map((c, i) => (
+                <div key={i} className="aspect-[3/2] border-b border-r border-[var(--hairline)] flex items-center justify-center relative group overflow-hidden">
+                  <div className="absolute inset-0 bg-[var(--gold)] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <span className="relative font-display text-sm md:text-lg text-[var(--ivory-dim)] group-hover:text-[var(--ink)] transition-colors duration-500 text-center px-2">{c}</span>
+                </div>
+              ))}
+            </Stagger>
           </div>
         </div>
       </section>
@@ -80,12 +82,14 @@ function AssociatesPage() {
             <h2 className="font-display text-[44px] md:text-[64px] mt-6 text-ivory">Specified, sourced, signed off.</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[var(--hairline)] border border-[var(--hairline)]">
-            {ASSOC_PARTNERS.map((p, i) => (
-              <div key={i} className="bg-[var(--char)] aspect-[2/1] flex flex-col justify-between p-6 group hover:bg-[var(--char2)] transition-colors">
-                <div className="font-mono-mini text-gold">{String(i+1).padStart(2,'0')}</div>
-                <div className="font-display text-lg md:text-xl text-ivory">{p}</div>
-              </div>
-            ))}
+            <Stagger step={0.04} y={16} blur={2} duration={0.7}>
+              {ASSOC_PARTNERS.map((p, i) => (
+                <div key={i} className="bg-[var(--char)] aspect-[2/1] flex flex-col justify-between p-6 group hover:bg-[var(--char2)] transition-colors">
+                  <div className="font-mono-mini text-gold">{String(i+1).padStart(2,'0')}</div>
+                  <div className="font-display text-lg md:text-xl text-ivory">{p}</div>
+                </div>
+              ))}
+            </Stagger>
           </div>
         </div>
       </section>
@@ -103,12 +107,14 @@ function AssociatesPage() {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {[1,2,3].map((n) => (
-              <div key={n} className="cert aspect-[3/4] flex items-center justify-center p-6">
-                <img src="assets/associate-partners.jpeg" alt={`Associate certificate ${n}`} className="max-w-full max-h-full object-contain" />
-                <div className="absolute top-4 left-4 font-mono-mini text-gold">CERT · 0{n}</div>
-              </div>
-            ))}
+            <Stagger step={0.12}>
+              {[1,2,3].map((n) => (
+                <div key={n} className="cert aspect-[3/4] flex items-center justify-center p-6">
+                  <img src="assets/associate-partners.jpeg" alt={`Associate certificate ${n}`} className="max-w-full max-h-full object-contain" />
+                  <div className="absolute top-4 left-4 font-mono-mini text-gold">CERT · 0{n}</div>
+                </div>
+              ))}
+            </Stagger>
           </div>
           <div className="mt-8 font-mono-mini text-[var(--ivory-faint)] text-center">↑ Certificate on file — shown once, three cards for layout</div>
         </div>
@@ -153,19 +159,23 @@ function NewsPage() {
       <section className="relative py-20 px-6 md:px-12">
         <div className="max-w-[1440px] mx-auto">
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <MaskReveal>
+            <ImageRise>
               <Photo src={IMG.blog1} className="aspect-[5/4]" overlay={0.15}>
                 <div className="absolute top-4 left-4 font-mono-mini text-gold bg-[rgba(10,10,10,0.6)] px-3 py-1 backdrop-blur-sm">{ARTICLES[0].tag}</div>
               </Photo>
-            </MaskReveal>
+            </ImageRise>
             <div>
-              <div className="font-mono-mini text-gold">{ARTICLES[0].tag} · {ARTICLES[0].date}</div>
-              <h2 className="font-display text-[40px] md:text-[64px] leading-[1.04] mt-6 text-ivory">{ARTICLES[0].title}</h2>
-              <p className="mt-8 text-[var(--ivory-dim)] text-lg leading-relaxed">{ARTICLES[0].excerpt}</p>
-              <div className="mt-10 flex items-center gap-6">
+              <Reveal><div className="font-mono-mini text-gold">{ARTICLES[0].tag} · {ARTICLES[0].date}</div></Reveal>
+              <Reveal delay={0.12}>
+                <h2 className="font-display text-[40px] md:text-[64px] leading-[1.04] mt-6 text-ivory">{ARTICLES[0].title}</h2>
+              </Reveal>
+              <Reveal delay={0.24}>
+                <p className="mt-8 text-[var(--ivory-dim)] text-lg leading-relaxed">{ARTICLES[0].excerpt}</p>
+              </Reveal>
+              <Reveal delay={0.36} className="mt-10 flex items-center gap-6">
                 <Magnetic><button className="btn-gold">Read the Piece →</button></Magnetic>
                 <span className="font-mono-mini text-[var(--ivory-faint)]">6 min read · by {ARTICLES[0].author}</span>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>
@@ -175,30 +185,36 @@ function NewsPage() {
       <section className="relative py-20 px-6 md:px-12 border-t border-[var(--hairline)]">
         <div className="max-w-[1440px] mx-auto">
           <div className="flex items-end justify-between mb-16">
-            <h2 className="font-display text-[40px] md:text-[56px] text-ivory">All dispatches</h2>
-            <div className="font-mono-mini text-[var(--ivory-faint)]">{ARTICLES.length} articles</div>
+            <Reveal>
+              <h2 className="font-display text-[40px] md:text-[56px] text-ivory">All dispatches</h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="font-mono-mini text-[var(--ivory-faint)]">{ARTICLES.length} articles</div>
+            </Reveal>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {ARTICLES.slice(1).map((a, i) => (
-              <article key={i} className="group cursor-none">
-                <Photo src={[IMG.blog2, IMG.blog3, IMG.blog4, IMG.blog5, IMG.blog6][i] || IMG.blog2} className="aspect-[4/5]" overlay={0.15}>
-                  <div className="absolute top-4 left-4 font-mono-mini text-gold bg-[rgba(10,10,10,0.6)] px-3 py-1 backdrop-blur-sm">{a.tag}</div>
-                </Photo>
-                <div className="pt-6">
-                  <div className="flex items-center gap-4 font-mono-mini text-[var(--ivory-faint)]">
-                    <span className="text-gold">{a.tag}</span>
-                    <span>·</span>
-                    <span>{a.date}</span>
+            <Stagger step={0.1} y={40}>
+              {ARTICLES.slice(1).map((a, i) => (
+                <article key={i} className="group cursor-none">
+                  <Photo src={[IMG.blog2, IMG.blog3, IMG.blog4, IMG.blog5, IMG.blog6][i] || IMG.blog2} className="aspect-[4/5]" overlay={0.15}>
+                    <div className="absolute top-4 left-4 font-mono-mini text-gold bg-[rgba(10,10,10,0.6)] px-3 py-1 backdrop-blur-sm">{a.tag}</div>
+                  </Photo>
+                  <div className="pt-6">
+                    <div className="flex items-center gap-4 font-mono-mini text-[var(--ivory-faint)]">
+                      <span className="text-gold">{a.tag}</span>
+                      <span>·</span>
+                      <span>{a.date}</span>
+                    </div>
+                    <h3 className="mt-4 font-display text-2xl md:text-[30px] leading-tight text-ivory group-hover:text-gold transition-colors">{a.title}</h3>
+                    <p className="mt-4 text-[var(--ivory-dim)] leading-relaxed">{a.excerpt}</p>
+                    <div className="mt-6 flex items-center justify-between">
+                      <span className="font-mono-mini text-gold link-underline">Read Article →</span>
+                      <span className="font-mono-mini text-[var(--ivory-faint)]">by {a.author}</span>
+                    </div>
                   </div>
-                  <h3 className="mt-4 font-display text-2xl md:text-[30px] leading-tight text-ivory group-hover:text-gold transition-colors">{a.title}</h3>
-                  <p className="mt-4 text-[var(--ivory-dim)] leading-relaxed">{a.excerpt}</p>
-                  <div className="mt-6 flex items-center justify-between">
-                    <span className="font-mono-mini text-gold link-underline">Read Article →</span>
-                    <span className="font-mono-mini text-[var(--ivory-faint)]">by {a.author}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              ))}
+            </Stagger>
           </div>
         </div>
       </section>

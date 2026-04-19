@@ -11,7 +11,7 @@ const IMG = {
   hospitality:   'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=1200&q=80',  // hotel lobby
   commercial:    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80',  // modern office
   residential:   'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80',  // luxury villa
-  theme:         'https://images.unsplash.com/photo-1517639493569-5666a7b2f494?w=1200&q=80',  // themed space
+  theme:         'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&q=80',  // themed attraction / immersive
   special:       'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&q=80',  // pavilion
 
   // Studio / About
