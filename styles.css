@@ -80,6 +80,10 @@ body { cursor: none; }
   filter: invert(1) hue-rotate(180deg) saturate(1.1) brightness(1.08);
 }
 
+/* Hide scrollbar utility (used on horizontal-scroll tracks) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
 /* ========== MARQUEE ========== */
 @keyframes scroll-x {
   from { transform: translateX(0); }
