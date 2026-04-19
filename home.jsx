@@ -46,7 +46,210 @@ const BLOGS = [
   { date: '08 February 2025', author: 'Projects', tag: 'Process', title: 'How to furnish a house, slowly.', excerpt: 'A working method for furnishing a Dubai residence without the showroom shortcut — for owners who want the house to feel inevitable.' },
 ];
 
-/* ---------- Hero (Architectural Editorial 3D) ---------- */
+/* ---------- Hero: scroll-driven expansion reel (custom, babel-standalone) ----------
+   Pattern: while locked, wheel/touch gestures don't scroll the page — they advance
+   a progress value 0→1 that drives the centre media box's width/height and fades
+   the background + flies the two title halves apart. At 1 the page unlocks; at
+   top-of-page + upward gesture it re-locks. Written fresh for this codebase:
+     - framer-motion via window.FramerMotion (MH alias)
+     - wheel and touch listeners scoped to window, passive:false so preventDefault
+       actually suspends native scroll
+     - numeric constants picked to feel appropriate on desktop/mobile; easing on
+       the derived sizes via power-of-two curve so it opens slowly then accelerates
+     - top meta strip, bottom progress bar and after-hero divider are my own
+       additions, not in the reference pattern
+------------------------------------------------------------------------------- */
+const HERO_BG_SRC    = 'https://images.unsplash.com/photo-1486304873000-235643847519?w=1920&q=85';
+const HERO_VIDEO_SRC = 'assets/hero-video.mp4';
+
+function ExpandingHero() {
+  const [progress, setProgress]   = useState(0);
+  const [locked, setLocked]       = useState(true);
+  const [compact, setCompact]     = useState(false);
+  const touchY                    = useRef(null);
+
+  useEffect(() => {
+    const onResize = () => setCompact(window.innerWidth < 768);
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    const nudge = (amount) => {
+      setProgress(prev => {
+        const next = Math.min(1, Math.max(0, prev + amount));
+        if (next >= 1) setLocked(false);
+        return next;
+      });
+    };
+
+    const onWheel = (e) => {
+      if (!locked) {
+        if (e.deltaY < -12 && window.scrollY < 4) {
+          e.preventDefault();
+          setLocked(true);
+          setProgress(0.9);
+        }
+        return;
+      }
+      e.preventDefault();
+      nudge(e.deltaY * 0.00095);
+    };
+
+    const onTouchStart = (e) => { touchY.current = e.touches[0].clientY; };
+    const onTouchMove  = (e) => {
+      const y  = e.touches[0].clientY;
+      const dy = (touchY.current ?? y) - y;
+      touchY.current = y;
+      if (!locked) {
+        if (dy < -24 && window.scrollY < 4) {
+          e.preventDefault();
+          setLocked(true);
+          setProgress(0.9);
+        }
+        return;
+      }
+      e.preventDefault();
+      nudge(dy * (dy < 0 ? 0.0088 : 0.0058));
+    };
+    const onTouchEnd = () => { touchY.current = null; };
+    const pinTop     = () => { if (locked) window.scrollTo(0, 0); };
+
+    window.addEventListener('wheel',      onWheel,      { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: false });
+    window.addEventListener('touchmove',  onTouchMove,  { passive: false });
+    window.addEventListener('touchend',   onTouchEnd);
+    window.addEventListener('scroll',     pinTop);
+    return () => {
+      window.removeEventListener('wheel',      onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove',  onTouchMove);
+      window.removeEventListener('touchend',   onTouchEnd);
+      window.removeEventListener('scroll',     pinTop);
+    };
+  }, [locked]);
+
+  // Ease the derived size so it opens slowly then accelerates
+  const eased  = progress * progress * (3 - 2 * progress);   // smoothstep
+  const baseW  = compact ? 280 : 360;
+  const baseH  = compact ? 380 : 460;
+  const growW  = compact ? 620 : 1160;
+  const growH  = compact ? 240 : 380;
+  const mediaW = baseW + eased * growW;
+  const mediaH = baseH + eased * growH;
+  const flyVW  = progress * (compact ? 160 : 135);
+  const bgOpacity = Math.max(0, 1 - progress * 0.8);
+
+  return (
+    <section className="relative bg-[var(--ink)] overflow-hidden">
+      <div className="relative w-full min-h-[100dvh] flex items-center justify-center">
+
+        {/* Top meta strip */}
+        <div className="absolute top-0 inset-x-0 z-40 flex items-center justify-between px-6 md:px-12 pt-6 pointer-events-none">
+          <div className="flex items-center gap-3 font-mono-mini text-[var(--ivory-faint)] tracking-[0.22em] uppercase text-[10px]">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
+            Infinity · Al Qusais Atelier
+          </div>
+          <div className="font-mono-mini text-[var(--ivory-faint)] tracking-[0.22em] uppercase text-[10px]">Reel 01 / 06</div>
+        </div>
+
+        {/* Background image fades out as the reel opens */}
+        <MH.div
+          className="absolute inset-0 z-0"
+          animate={{ opacity: bgOpacity }}
+          transition={{ duration: 0.2, ease: 'linear' }}
+        >
+          <img
+            src={HERO_BG_SRC}
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            className="w-full h-full object-cover"
+            style={{ filter: 'grayscale(0.4) contrast(1.1) brightness(0.45)' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(10,10,10,0.55)] to-[rgba(10,10,10,0.92)]" />
+        </MH.div>
+
+        {/* Expanding media box */}
+        <div
+          className="absolute z-10 top-1/2 left-1/2 rounded-2xl overflow-hidden"
+          style={{
+            width: `${mediaW}px`,
+            height: `${mediaH}px`,
+            maxWidth: '94vw',
+            maxHeight: '82vh',
+            transform: 'translate(-50%, -50%)',
+            boxShadow: '0 36px 140px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(201,169,97,0.22)',
+            willChange: 'width, height',
+          }}
+        >
+          <video
+            src={HERO_VIDEO_SRC}
+            autoPlay muted loop playsInline preload="auto"
+            className="w-full h-full object-cover pointer-events-none"
+          />
+          <MH.div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, rgba(10,10,10,0.25) 0%, rgba(10,10,10,0.65) 100%)' }}
+            animate={{ opacity: 0.9 - progress * 0.5 }}
+            transition={{ duration: 0.2 }}
+          />
+          <div className="absolute inset-3 border border-[var(--gold)]/25 rounded-xl pointer-events-none" />
+
+          {/* Bottom captions on the media */}
+          <div className="absolute left-0 right-0 bottom-5 flex flex-col items-center gap-1 z-10 pointer-events-none">
+            <p className="font-display-it text-lg md:text-xl text-[var(--gold)]" style={{ transform: `translateX(-${flyVW}vw)` }}>
+              Dubai, since 2013
+            </p>
+            <p className="font-mono-mini text-[var(--ivory-faint)] tracking-[0.28em] uppercase text-[10px]" style={{ transform: `translateX(${flyVW}vw)` }}>
+              {locked ? 'Scroll to open' : 'Release to continue'}
+            </p>
+          </div>
+        </div>
+
+        {/* Title splits apart as it expands */}
+        <div className="relative z-20 pointer-events-none flex flex-col items-center text-center gap-1 px-4 mix-blend-difference">
+          <MH.h1
+            className="font-display leading-[0.92] text-ivory"
+            style={{ fontSize: 'clamp(48px, 11vw, 144px)', transform: `translateX(-${flyVW}vw)` }}
+          >
+            Infinity
+          </MH.h1>
+          <MH.h1
+            className="font-display-it leading-[0.92] text-gold"
+            style={{ fontSize: 'clamp(48px, 11vw, 144px)', transform: `translateX(${flyVW}vw)` }}
+          >
+            Turnkey.
+          </MH.h1>
+        </div>
+
+        {/* Progress rail at the bottom */}
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col items-center gap-2">
+          <div className="w-28 h-px bg-[var(--hairline)] overflow-hidden">
+            <div className="h-full bg-[var(--gold)]" style={{ width: `${progress * 100}%`, transition: 'width 0.08s linear' }} />
+          </div>
+          <div className="font-mono-mini text-[var(--ivory-faint)] tracking-[0.28em] uppercase text-[10px]">
+            {locked ? `${Math.round(progress * 100)}% · Open reel` : 'Full reel · Continue ↓'}
+          </div>
+        </div>
+      </div>
+
+      {/* Divider that reveals once the reel is fully open */}
+      <MH.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: locked ? 0 : 1, y: locked ? 24 : 0 }}
+        transition={{ duration: 0.7, delay: 0.05 }}
+        className="relative w-full py-14 flex flex-col items-center text-center border-t border-[var(--hairline)] bg-[var(--ink)]"
+      >
+        <span className="font-mono-mini text-gold tracking-[0.28em] uppercase text-[11px]">Part 01 · The Studio</span>
+        <h2 className="mt-5 font-display text-ivory text-3xl md:text-5xl">A year of quiet work, on your scroll.</h2>
+      </MH.div>
+    </section>
+  );
+}
+
+/* ---------- Legacy Hero (Architectural Editorial 3D) — retained but not mounted ---------- */
 const HERO_ARCH_DEEP = 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1600&q=80';
 const HERO_ARCH_MAIN = 'https://images.unsplash.com/photo-1486304873000-235643847519?w=1600&q=85';
 
@@ -809,7 +1012,7 @@ function CEOLetter() {
 function HomePage() {
   return (
     <>
-      <HomeHero />
+      <ExpandingHero />
       <AboutSnippet />
       <ServicesHScroll />
       <CategoriesScroll />
