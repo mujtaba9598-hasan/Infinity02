@@ -46,76 +46,193 @@ const BLOGS = [
   { date: '08 February 2025', author: 'Projects', tag: 'Process', title: 'How to furnish a house, slowly.', excerpt: 'A working method for furnishing a Dubai residence without the showroom shortcut — for owners who want the house to feel inevitable.' },
 ];
 
-/* ---------- Hero ---------- */
+/* ---------- Hero (Cinematic 3D) ---------- */
 function HomeHero({ overlayOpacity }) {
   const [active, setActive] = useState('retail');
+  const heroRef = useRef(null);
+  const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!heroRef.current) return;
+      const r = heroRef.current.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom) return;
+      setMouse({
+        x: Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)),
+        y: Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)),
+      });
+    };
+    window.addEventListener('mousemove', onMove);
+    const clock = setInterval(() => setTime(new Date()), 60000);
+    return () => { window.removeEventListener('mousemove', onMove); clearInterval(clock); };
+  }, []);
+
+  const parX = (mouse.x - 0.5) * 40;
+  const parY = (mouse.y - 0.5) * 30;
+  const tiltX = (0.5 - mouse.y) * 4;
+  const tiltY = (mouse.x - 0.5) * 5;
+  const dubaiTime = time.toLocaleTimeString('en-GB', { timeZone: 'Asia/Dubai', hour: '2-digit', minute: '2-digit', hour12: false });
+
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      {/* Hero image */}
-      <Photo src={IMG.heroReel} className="absolute inset-0" overlay={0}>
-        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 20% 30%, rgba(201,169,97,0.12), transparent 55%), linear-gradient(180deg, rgba(10,10,10,${overlayOpacity + 0.1}) 0%, rgba(10,10,10,${overlayOpacity + 0.55}) 100%)` }} />
-        <div className="absolute top-1/2 right-10 -translate-y-1/2 hidden lg:flex items-center gap-3 text-[var(--ivory-faint)]">
-          <span className="w-2 h-2 rounded-full bg-[var(--gold)] animate-pulse" />
-          <span className="font-mono-mini">Reel · Ch. 01 / 06</span>
+    <section ref={heroRef} className="hero-cinematic relative min-h-screen overflow-hidden bg-[var(--ink)]">
+      {/* Backdrop image with mouse parallax */}
+      <div
+        className="absolute inset-0"
+        style={{
+          transform: `scale(1.1) translate3d(${parX * -0.4}px, ${parY * -0.3}px, 0)`,
+          transition: 'transform 0.6s cubic-bezier(.2,.8,.2,1)',
+        }}
+      >
+        <img
+          src={IMG.heroReel}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: 'grayscale(0.25) contrast(1.08) brightness(0.78)' }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(180deg, rgba(10,10,10,${overlayOpacity + 0.15}) 0%, rgba(10,10,10,${overlayOpacity + 0.7}) 100%)` }}
+        />
+      </div>
+
+      {/* Gold spotlight following the cursor */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(650px circle at ${mouse.x * 100}% ${mouse.y * 100}%, rgba(201,169,97,0.18), transparent 55%)`,
+          transition: 'background 0.3s ease',
+        }}
+      />
+
+      {/* 3D rotating gold gyroscope ring */}
+      <div className="hero-gyro hidden md:block">
+        <div className="hero-gyro-inner">
+          <div className="hero-gyro-ring" />
+          <div className="hero-gyro-ring hero-gyro-ring-b" />
+          <div className="hero-gyro-ring hero-gyro-ring-c" />
+          <div className="hero-gyro-core" />
         </div>
-      </Photo>
+      </div>
+
+      {/* Floating gold bokeh */}
+      <span className="hero-bokeh b1" />
+      <span className="hero-bokeh b2" />
+      <span className="hero-bokeh b3" />
+      <span className="hero-bokeh b4" />
+
+      {/* Grain overlay */}
+      <div className="hero-grain" />
+
+      {/* Top meta strip */}
+      <div className="absolute top-0 inset-x-0 z-10 hidden md:flex items-center justify-between px-12 pt-20 text-[var(--ivory-faint)] font-mono-mini">
+        <div className="flex items-center gap-4">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
+          <span>Live Studio</span>
+          <span className="opacity-40">·</span>
+          <span>Dubai {dubaiTime} GST</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span>Reel 01 / 06</span>
+          <span className="opacity-40">·</span>
+          <span>The Practice</span>
+        </div>
+      </div>
 
       {/* Content overlay */}
-      <div className="relative z-10 min-h-screen flex flex-col px-6 md:px-12 pt-16 pb-10">
-        <div className="flex-1 flex flex-col justify-center max-w-[1440px] mx-auto w-full">
-          <div className="max-w-5xl">
-            <Eyebrow num="01 / 06" label="Infinity Turnkey — Dubai, Since 2013" />
+      <div className="relative z-10 min-h-screen flex flex-col px-6 md:px-12 pt-28 pb-10">
+        <div className="flex-1 flex flex-col justify-center max-w-[1440px] mx-auto w-full" style={{ perspective: '1400px' }}>
+          <MH.div
+            className="max-w-5xl"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
+            style={{
+              transform: `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
+              transformStyle: 'preserve-3d',
+              transition: 'transform 0.35s cubic-bezier(.2,.8,.2,1)',
+            }}
+          >
+            <Eyebrow num="01 / 06" label="Infinity Turnkey · Dubai, Since 2013" />
 
-            <h1 className="mt-8 font-display text-[48px] sm:text-[72px] md:text-[112px] xl:text-[140px] leading-[0.95]">
-              <SplitLines text={['Creative solutions']} className="block text-ivory" />
-              <span className="block">
+            <h1
+              className="mt-8 font-display leading-[0.94] relative"
+              style={{ fontSize: 'clamp(52px, 10vw, 168px)' }}
+            >
+              <span className="block text-ivory relative">
+                <SplitLines text={['Creative solutions']} />
+                <span className="hero-line-flare" />
+              </span>
+              <span className="block relative mt-1" style={{ transform: 'translateZ(30px)' }}>
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 font-display-it text-gold opacity-[0.18]"
+                  style={{ transform: 'translate3d(6px, 8px, -20px)', filter: 'blur(1px)' }}
+                >
+                  by Infinity.
+                </span>
                 <span className="line-mask block">
-                  <span className="line-inner in" style={{ transitionDelay: '0.25s' }}>
-                    <em className="font-display-it text-gold">by Infinity.</em>
+                  <span className="line-inner in" style={{ transitionDelay: '0.35s' }}>
+                    <em className="font-display-it text-gradient-gold">by Infinity.</em>
                   </span>
                 </span>
               </span>
             </h1>
 
-            <div className="mt-10 grid md:grid-cols-12 gap-6 md:gap-10 items-end">
+            <MH.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.85 }}
+              className="mt-12 grid md:grid-cols-12 gap-6 md:gap-10 items-end"
+            >
               <p className="md:col-span-6 text-[var(--ivory-dim)] text-base md:text-lg leading-relaxed max-w-lg">
-                The design & contracting atelier. A single, senior team for every high-end interior, fit-out and thematic project across the United Arab Emirates.
+                The design and contracting atelier. A single, senior team for every high-end interior, fit-out and thematic project across the United Arab Emirates.
               </p>
               <div className="md:col-span-6 flex flex-wrap gap-4 md:justify-end">
                 <Magnetic strength={0.2}><button className="btn-gold">View Recent Work →</button></Magnetic>
                 <Magnetic strength={0.2}><button className="btn-ghost">The Studio</button></Magnetic>
               </div>
-            </div>
-          </div>
+            </MH.div>
+          </MH.div>
         </div>
 
         {/* Sector pills */}
-        <div className="mt-auto pt-12">
+        <MH.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 1.05 }}
+          className="mt-auto pt-12"
+        >
           <div className="flex items-center justify-between mb-6">
-            <div className="font-mono-mini text-[var(--ivory-faint)]">Sectors we work in —</div>
+            <div className="font-mono-mini text-[var(--ivory-faint)]">Sectors we work in</div>
             <div className="font-mono-mini text-gold hidden md:block">{SECTORS.find(s => s.id === active)?.label} · showcase</div>
           </div>
           <div className="flex flex-wrap gap-3">
             {SECTORS.map((s) => (
-              <button key={s.id} onClick={() => setActive(s.id)}
-                className={`sector-pill ${active === s.id ? 'on' : ''}`}>
+              <button
+                key={s.id}
+                onClick={() => setActive(s.id)}
+                className={`sector-pill ${active === s.id ? 'on' : ''}`}
+              >
                 {s.label}
               </button>
             ))}
           </div>
-        </div>
+        </MH.div>
       </div>
 
       {/* Sector preview card — bottom right */}
       <div className="absolute bottom-10 right-6 md:right-12 z-20 hidden lg:block">
         <MH.div
           key={active}
-          initial={{ opacity: 0, x: 40, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, x: 0, filter: 'blur(0)' }}
-          transition={{ duration: 0.7, ease: [0.77, 0, 0.18, 1] }}
+          initial={{ opacity: 0, x: 50, rotateY: -12, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, x: 0, rotateY: 0, filter: 'blur(0)' }}
+          transition={{ duration: 0.8, ease: [0.22, 0.9, 0.28, 1] }}
           className="w-[340px]"
+          style={{ transformStyle: 'preserve-3d' }}
         >
-          <Photo src={IMG[active]} className="aspect-[4/5]" overlay={0.25}>
+          <Photo src={IMG[active]} className="aspect-[4/5] shadow-[0_30px_80px_rgba(0,0,0,0.55)]" overlay={0.25}>
             <div className="absolute bottom-4 left-4 font-mono-mini text-gold">{SECTORS.find(s => s.id === active)?.img}</div>
           </Photo>
           <div className="mt-4 flex items-center justify-between">
@@ -123,6 +240,12 @@ function HomeHero({ overlayOpacity }) {
             <div className="font-mono-mini text-gold">View →</div>
           </div>
         </MH.div>
+      </div>
+
+      {/* Scroll cue */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 pointer-events-none hidden md:flex flex-col items-center gap-2 text-[var(--ivory-faint)]">
+        <span className="font-mono-mini">Scroll</span>
+        <span className="hero-scroll-cue" />
       </div>
     </section>
   );
