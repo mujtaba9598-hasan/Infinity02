@@ -307,8 +307,8 @@ function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-10">
-          <div className="flex items-center gap-4">
-            <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-12 w-auto logo-dark-invert" />
+          <div className="flex items-center gap-5">
+            <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-20 md:h-24 w-auto logo-dark-invert" />
             <span className="font-mono-mini text-[var(--ivory-faint)]">© 2025 Infinity Turnkey Interiors L.L.C · All Rights Reserved</span>
           </div>
           <div className="flex items-center gap-3">
