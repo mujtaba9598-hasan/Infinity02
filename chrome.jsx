@@ -333,6 +333,24 @@ function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Brand mark at the very end of the footer */}
+      <div className="relative w-full border-t border-[var(--hairline)] bg-[var(--ink)] overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="font-display text-center text-gold leading-[0.85] py-10 md:py-14 select-none"
+          style={{
+            fontSize: 'clamp(56px, 15vw, 240px)',
+            letterSpacing: '0.04em',
+            fontWeight: 400,
+            color: 'var(--gold)',
+            WebkitTextStroke: '0.5px var(--gold)',
+            opacity: 0.95,
+          }}
+        >
+          INFINITY
+        </div>
+      </div>
     </footer>
   );
 }
