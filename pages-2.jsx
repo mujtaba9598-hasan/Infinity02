@@ -1,6 +1,166 @@
 /* ============ ASSOCIATES + NEWS + CONTACT PAGES ============ */
 const { motion: MPP, AnimatePresence: APPP } = window.FramerMotion;
 
+/* ---------- Inline icons for the Contact ActionSearchBar (lucide-react replacements) ---------- */
+const _IPC = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true };
+const IBag     = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>;
+const IBed     = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/><circle cx="6" cy="13" r="2"/></svg>;
+const IBrief   = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
+const IHome2   = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+const ICompass = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>;
+const IFlag    = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>;
+const ISearchIcon = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>;
+const ISendIcon   = ({ s = 16 }) => <svg {..._IPC} width={s} height={s}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>;
+const ICheckIcon  = ({ s = 14 }) => <svg {..._IPC} width={s} height={s}><polyline points="20 6 9 17 4 12"/></svg>;
+
+/* ---------- ActionSearchBar (adapted from 21st.dev action-search-bar.tsx)
+     Source targeted shadcn Input + lucide icons + TSX. Port:
+      - plain <input> with .field class, no shadcn dependency
+      - lucide icons replaced with the inline set above
+      - styling mapped to dark luxury: ink/gold/ivory
+      - behaves as a combobox for the Project Type form field: focus opens
+        filtered list, click selects, outside click collapses.   ---------- */
+function ActionSearchBar({ value, onChange, actions, placeholder = 'Select sector, or type to filter' }) {
+  const [query, setQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [highlight, setHighlight] = useState(0);
+  const rootRef = useRef(null);
+
+  const normalized = query.toLowerCase().trim();
+  const filtered = !normalized
+    ? actions
+    : actions.filter(a =>
+        a.label.toLowerCase().includes(normalized) ||
+        (a.description || '').toLowerCase().includes(normalized));
+
+  useEffect(() => {
+    const onMouseDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) {
+        setIsOpen(false);
+        setQuery('');
+      }
+    };
+    document.addEventListener('mousedown', onMouseDown);
+    return () => document.removeEventListener('mousedown', onMouseDown);
+  }, []);
+
+  useEffect(() => { setHighlight(0); }, [normalized]);
+
+  const choose = (a) => {
+    onChange && onChange(a.label);
+    setQuery('');
+    setIsOpen(false);
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Escape') { setIsOpen(false); setQuery(''); return; }
+    if (!isOpen) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); setHighlight(h => Math.min(h + 1, filtered.length - 1)); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); setHighlight(h => Math.max(h - 1, 0)); }
+    if (e.key === 'Enter')     { e.preventDefault(); if (filtered[highlight]) choose(filtered[highlight]); }
+  };
+
+  const selected = actions.find(a => a.label === value);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <div className="relative">
+        <div className="flex items-center gap-2">
+          {selected && !isOpen && (
+            <span className="text-gold shrink-0 flex items-center">{selected.icon}</span>
+          )}
+          <input
+            type="text"
+            value={isOpen ? query : (value || '')}
+            placeholder={placeholder}
+            onFocus={() => { setQuery(''); setIsOpen(true); }}
+            onChange={(e) => { setQuery(e.target.value); setIsOpen(true); }}
+            onKeyDown={onKeyDown}
+            className="field pr-9"
+            autoComplete="off"
+          />
+        </div>
+        <div className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--ivory-faint)]">
+          <APPP mode="popLayout">
+            {isOpen && query.length > 0 ? (
+              <MPP.div key="send" initial={{ y: -14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 14, opacity: 0 }} transition={{ duration: 0.22 }}>
+                <ISendIcon />
+              </MPP.div>
+            ) : value && !isOpen ? (
+              <MPP.div key="check" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} transition={{ duration: 0.22 }} className="text-gold">
+                <ICheckIcon s={16} />
+              </MPP.div>
+            ) : (
+              <MPP.div key="search" initial={{ y: -14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 14, opacity: 0 }} transition={{ duration: 0.22 }}>
+                <ISearchIcon />
+              </MPP.div>
+            )}
+          </APPP>
+        </div>
+      </div>
+
+      <APPP>
+        {isOpen && (
+          <MPP.div
+            className="absolute top-full left-0 right-0 z-30 mt-2 bg-[var(--char)] border border-[var(--hairline)] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden"
+            initial={{ opacity: 0, y: -8, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: -8, height: 0 }}
+            transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            <ul className="py-2">
+              {filtered.map((a, i) => {
+                const isActive = i === highlight;
+                const isSelected = value === a.label;
+                return (
+                  <MPP.li
+                    key={a.id}
+                    className={`px-4 py-3 flex items-center justify-between cursor-pointer transition-colors ${isActive ? 'bg-[var(--char2)]' : 'hover:bg-[var(--char2)]'}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.18, delay: i * 0.03 }}
+                    onMouseEnter={() => setHighlight(i)}
+                    onClick={() => choose(a)}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-gold shrink-0">{a.icon}</span>
+                      <span className="font-display text-base text-ivory group-hover:text-gold truncate">{a.label}</span>
+                      {a.description && (
+                        <span className="text-xs text-[var(--ivory-faint)] font-mono-mini tracking-wider truncate hidden sm:inline">{a.description}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      {isSelected && <span className="text-gold"><ICheckIcon /></span>}
+                      {a.end && <span className="text-[10px] text-gold font-mono-mini uppercase tracking-[0.2em]">{a.end}</span>}
+                    </div>
+                  </MPP.li>
+                );
+              })}
+              {filtered.length === 0 && (
+                <li className="px-4 py-4 text-sm text-[var(--ivory-faint)] font-mono-mini">No sector matches. Try 'retail', 'hospitality', etc.</li>
+              )}
+            </ul>
+            <div className="px-4 py-2 border-t border-[var(--hairline)] flex items-center justify-between text-[10px] text-[var(--ivory-faint)] font-mono-mini uppercase tracking-[0.2em]">
+              <span>↑ ↓ navigate · ↵ select</span>
+              <span>ESC close</span>
+            </div>
+          </MPP.div>
+        )}
+      </APPP>
+    </div>
+  );
+}
+
+const PROJECT_TYPES = [
+  { id: 'retail',       label: 'Retail',          icon: <IBag />,     description: 'Boutiques, flagship stores',       end: 'Sector 01' },
+  { id: 'hospitality',  label: 'Hospitality',     icon: <IBed />,     description: 'Hotels, F&B, lounges',             end: 'Sector 02' },
+  { id: 'commercial',   label: 'Commercial',      icon: <IBrief />,   description: 'Corporate floors, offices',        end: 'Sector 03' },
+  { id: 'residential',  label: 'Residential',     icon: <IHome2 />,   description: 'Private villas, apartments',       end: 'Sector 04' },
+  { id: 'theme',        label: 'Theme Park',      icon: <ICompass />, description: 'Immersive attractions',            end: 'Sector 05' },
+  { id: 'special',      label: 'Special Project', icon: <IFlag />,    description: 'Pavilions, exhibition, bespoke',   end: 'Sector 06' },
+];
+
 /* ============================================================ */
 /* ASSOCIATES PAGE                                               */
 /* ============================================================ */
@@ -277,10 +437,11 @@ function ContactPage() {
                     </div>
                     <div>
                       <div className="field-label">Project Type</div>
-                      <select className="field" value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
-                        <option>Retail</option><option>Hospitality</option><option>Commercial</option>
-                        <option>Residential</option><option>Theme Park</option><option>Special Project</option>
-                      </select>
+                      <ActionSearchBar
+                        value={form.type}
+                        onChange={(val) => setForm({ ...form, type: val })}
+                        actions={PROJECT_TYPES}
+                      />
                     </div>
                   </div>
                   <div>
