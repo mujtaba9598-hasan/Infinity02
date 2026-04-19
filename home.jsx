@@ -529,25 +529,111 @@ function Testimonials() {
   );
 }
 
-/* ---------- Materials Ticker ---------- */
-function MaterialsTicker() {
-  const row = (
-    <>
-      {MATERIAL_BRANDS.map((b, i) => (
-        <span key={i} className="ticker-item">
-          {b}<span className="dot" />
-        </span>
-      ))}
-    </>
-  );
+/* ---------- Brands Orbit (21st.dev spinning-logos adapted) ----------
+   Source was a fixed 7-lucide-icon ring with "YOUR LOGO" in the centre,
+   Tailwind 4 + spin-slow/spin-reverse keyframes. Rewritten for our stack:
+    - lucide icons replaced with 2-3 character material-partner monograms
+      (we don't have licensed brand SVGs, so circles carry brand short-codes)
+    - centre shows the real Infinity wordmark, filter-inverted for the dark bg
+    - outer ring rotates 60s linear, each counter-rotates at the same speed
+      so text stays upright while travelling around the orbit
+    - pauses on hover, respects prefers-reduced-motion
+-------------------------------------------------------------------- */
+function BrandsOrbit() {
+  const BRANDS = [
+    { name: 'RAK Ceramics',       mono: 'RAK' },
+    { name: 'Jotun',              mono: 'JT'  },
+    { name: 'Dulux',              mono: 'DX'  },
+    { name: 'Saint-Gobain',       mono: 'S-G' },
+    { name: 'Danube',             mono: 'DN'  },
+    { name: 'Arabian Aluminium',  mono: 'AA'  },
+    { name: 'Grohe',              mono: 'GR'  },
+    { name: 'Kohler',             mono: 'KO'  },
+    { name: 'Hafele',             mono: 'HF'  },
+    { name: 'Dorma',              mono: 'DM'  },
+  ];
+  const radius    = 150;
+  const iconSize  = 56;
+  const ringPad   = 32;
+  const diameter  = radius * 2 + iconSize + ringPad;
+
   return (
-    <section className="relative py-16 border-y border-[var(--hairline)] overflow-hidden bg-[var(--ink)]">
-      <div className="marquee-slow">
-        <div className="marquee-track">
-          {row}{row}
+    <section className="relative py-24 md:py-32 px-6 md:px-12 bg-[var(--ink)] border-y border-[var(--hairline)] overflow-hidden">
+      <div className="max-w-[1440px] mx-auto grid md:grid-cols-12 gap-12 md:gap-16 items-center">
+        <div className="md:col-span-5">
+          <Reveal>
+            <Eyebrow num="09" label="Material Partners" />
+            <h2 className="font-display text-[44px] md:text-[64px] leading-[1.04] mt-6 text-ivory">
+              A supply bench,<br/><em className="font-display-it text-gold">not a supply chain.</em>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="mt-8 text-[var(--ivory-dim)] leading-relaxed max-w-lg">
+              RAK Ceramics, Jotun, Dulux, Saint-Gobain, Grohe, Kohler, Hafele. Every finish, every hinge, every handle on an Infinity project comes from a partner we have maintained and tested over thirteen years.
+            </p>
+          </Reveal>
+          <Reveal delay={0.28}>
+            <p className="mt-6 text-[var(--ivory-dim)] leading-relaxed max-w-lg">
+              Specified once in the drawing room. Verified at the factory floor. Delivered to site under our signature, not theirs.
+            </p>
+          </Reveal>
+          <Reveal delay={0.42} className="mt-10 flex items-center gap-6">
+            <div className="font-display text-[48px] md:text-[64px] text-gold leading-none">14<span className="text-[var(--ivory-dim)] text-2xl align-top">+</span></div>
+            <div className="font-mono-mini text-[var(--ivory-faint)] uppercase tracking-[0.2em] text-xs leading-snug">
+              Material partners<br/>One Infinity signature
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="md:col-span-7 flex justify-center items-center order-first md:order-none">
+          <div
+            className="relative rounded-full bg-[var(--char)]/60 border border-[var(--hairline)] brands-orbit-ring"
+            style={{
+              width: `min(${diameter}px, 86vw)`,
+              height: `min(${diameter}px, 86vw)`,
+              boxShadow: 'inset 0 0 80px rgba(201,169,97,0.08)',
+            }}
+          >
+            <div className="absolute inset-0 brands-orbit-spin">
+              {BRANDS.map((b, i) => {
+                const angle = (360 / BRANDS.length) * i;
+                const rad = (Math.PI / 180) * angle;
+                return (
+                  <div
+                    key={b.name}
+                    title={b.name}
+                    style={{
+                      top: `calc(50% - ${iconSize / 2}px + ${radius * Math.sin(rad)}px)`,
+                      left: `calc(50% - ${iconSize / 2}px + ${radius * Math.cos(rad)}px)`,
+                      width: iconSize, height: iconSize,
+                    }}
+                    className="absolute flex items-center justify-center rounded-full bg-[var(--char2)] border border-[var(--gold)]/50 text-gold brands-orbit-counter font-mono-mini font-semibold text-[11px] tracking-[0.12em] shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+                  >
+                    {b.mono}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div
+                className="rounded-full flex items-center justify-center border border-[var(--hairline)]"
+                style={{
+                  width: '46%', height: '46%',
+                  background: 'radial-gradient(circle at 35% 25%, #1A1815 0%, #0A0A0A 70%)',
+                  boxShadow: 'inset 0 0 36px rgba(201,169,97,0.12), 0 12px 40px rgba(0,0,0,0.6)',
+                }}
+              >
+                <img
+                  src="assets/infinity-logo-transparent.png"
+                  alt="Infinity"
+                  className="w-[72%] h-auto logo-dark-invert"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="text-center mt-6 font-mono-mini text-[var(--ivory-faint)]">Specified Materials · UAE Supply Network</div>
     </section>
   );
 }
@@ -718,7 +804,7 @@ function HomePage() {
       <ExpertiseBlock />
       <Testimonials />
       <CEOLetter />
-      <MaterialsTicker />
+      <BrandsOrbit />
       <ClientsGrid />
       <BlogPreview />
       <FinalCTA />

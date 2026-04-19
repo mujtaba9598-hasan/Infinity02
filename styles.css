@@ -82,6 +82,17 @@ body { cursor: none; }
   filter: invert(1) hue-rotate(180deg) saturate(1.1) brightness(1.08);
 }
 
+/* ========== BRANDS ORBIT (21st.dev spinning-logos, adapted) ========== */
+@keyframes brands-orbit-spin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes brands-orbit-counter { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+.brands-orbit-spin    { animation: brands-orbit-spin 60s linear infinite; will-change: transform; }
+.brands-orbit-counter { animation: brands-orbit-counter 60s linear infinite; will-change: transform; }
+.brands-orbit-ring:hover .brands-orbit-spin,
+.brands-orbit-ring:hover .brands-orbit-counter { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .brands-orbit-spin, .brands-orbit-counter { animation: none; }
+}
+
 /* ========== HOVER BUTTON particle trail (21st.dev, adapted) ========== */
 .hover-btn { position: relative; isolation: isolate; overflow: hidden; }
 .hover-btn > .hover-btn-content {
