@@ -222,26 +222,6 @@ function HomeHero({ overlayOpacity }) {
         </MH.div>
       </div>
 
-      {/* Sector preview card — bottom right */}
-      <div className="absolute bottom-10 right-6 md:right-12 z-20 hidden lg:block">
-        <MH.div
-          key={active}
-          initial={{ opacity: 0, x: 50, rotateY: -12, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, x: 0, rotateY: 0, filter: 'blur(0)' }}
-          transition={{ duration: 0.8, ease: [0.22, 0.9, 0.28, 1] }}
-          className="w-[340px]"
-          style={{ transformStyle: 'preserve-3d' }}
-        >
-          <Photo src={IMG[active]} className="aspect-[4/5] shadow-[0_30px_80px_rgba(0,0,0,0.55)]" overlay={0.25}>
-            <div className="absolute bottom-4 left-4 font-mono-mini text-gold">{SECTORS.find(s => s.id === active)?.img}</div>
-          </Photo>
-          <div className="mt-4 flex items-center justify-between">
-            <div className="font-display text-2xl text-ivory">{SECTORS.find(s => s.id === active)?.label}</div>
-            <div className="font-mono-mini text-gold">View →</div>
-          </div>
-        </MH.div>
-      </div>
-
       {/* Scroll cue */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 pointer-events-none hidden md:flex flex-col items-center gap-2 text-[var(--ivory-faint)]">
         <span className="font-mono-mini">Scroll</span>
