@@ -216,7 +216,7 @@ function Nav() {
       <div className="flex items-center justify-between px-6 md:px-10 py-5">
         {/* Logo */}
         <a onClick={(e) => { e.preventDefault(); go('home'); }} href="#home" className="flex items-center gap-3">
-          <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-11 md:h-14 w-auto logo-dark-invert" />
+          <img src="assets/infinity-logo-transparent.png" alt="Infinity Turnkey Interior Decoration L.L.C" className="h-14 md:h-20 w-auto logo-dark-invert" />
         </a>
 
         {/* Center nav (desktop) */}
