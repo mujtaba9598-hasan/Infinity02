@@ -16,7 +16,7 @@ function AboutPage() {
     { name: 'Marble & Stone',          img: IMG.blog4 },
     { name: 'Gypsum',                  img: IMG.studioPortrait },
     { name: 'Electro-Mechanical',      img: IMG.svc2 },
-    { name: 'Glass & Metal',           img: IMG.svc4 },
+    { name: 'Glass & Metal',           img: 'https://images.unsplash.com/photo-1460574283810-2aab119d8511?w=1200&q=80' },
     { name: 'Painting',                img: IMG.blog2 },
     { name: 'AutoCAD & Visualisation', img: IMG.atelier },
   ];
